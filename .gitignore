@@ -1,0 +1,18 @@
+# Build / tape outputs
+*.tap
+*.bin
+*.lbl
+*.sym
+*.map
+*.log
+_vice_out.png
+vice_test.log
+build/tape_map.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/

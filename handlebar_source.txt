@@ -1,0 +1,91 @@
+; these handlebar chunks are specified by row
+; need to be converted to 8x8 UDGs, deduped, and indexed
+; so imagine these are matrices, they need to be transposed
+
+; handlebar forward UDG row 1 - 7 UDGs
+
+$00,$00,$00,$3C,$00,$00,$00
+$00,$00,$00,$FF,$00,$00,$00
+$00,$00,$01,$FF,$80,$00,$00
+$03,$E0,$03,$EF,$C0,$07,$E0
+$0F,$FC,$03,$EF,$C0,$1F,$F0
+$3F,$FF,$07,$EF,$E0,$7F,$FC
+$FF,$FF,$9F,$EF,$F1,$FF,$FF
+$FF,$FF,$CF,$EF,$FB,$FF,$FF
+
+; handlebar forward UDG row 2 - 7 UDGs
+
+$FF,$FF,$E7,$FF,$CF,$FF,$FF
+$FF,$FF,$F0,$10,$1F,$FF,$FF
+$FF,$FF,$F8,$00,$3F,$FF,$FF
+$29,$7F,$FD,$BB,$7F,$FF,$D7
+$2F,$3F,$FD,$BB,$7F,$FF,$52
+$7F,$BE,$7D,$BB,$7F,$7E,$7E
+$FF,$CE,$3D,$BB,$7E,$3B,$FE
+$FF,$F4,$1D,$81,$7C,$13,$FF
+
+; handlebar left UDG row 1 - 7 UDGs
+
+$00,$00,$00,$00,$00,$07,$E0
+$00,$00,$05,$C0,$00,$1F,$F0
+$00,$00,$0C,$F8,$00,$3F,$FC
+$00,$00,$0E,$7C,$00,$FF,$FE
+$00,$00,$0F,$7E,$00,$FF,$FE
+$00,$00,$1F,$3F,$02,$FF,$FF
+$00,$00,$1F,$9F,$87,$FF,$FF
+$07,$F0,$1F,$DF,$CF,$FE,$0E
+
+; handlebar left UDG row 2 - 7 UDGs
+
+$0F,$F8,$3F,$FF,$C7,$FC,$F2
+$1F,$FA,$3F,$FF,$0F,$F1,$F8
+$3F,$FE,$7F,$F8,$1F,$E7,$FE
+$FF,$FE,$1F,$80,$7E,$6F,$FE
+$FF,$FF,$C6,$01,$FC,$6F,$FE
+$FF,$FF,$F0,$CB,$B0,$6F,$FF
+$FF,$FF,$FE,$E1,$A0,$7F,$FF
+$FF,$FF,$FF,$F5,$A0,$2F,$FF
+
+; handlebar right UDG row 1 - 7 UDGs
+
+$07,$E0,$00,$00,$00,$00,$00
+$0F,$F8,$00,$03,$A0,$00,$00
+$3F,$FC,$00,$1F,$30,$00,$00
+$7F,$FF,$00,$3E,$70,$00,$00
+$7F,$FF,$00,$7E,$F0,$00,$00
+$FF,$FF,$40,$FC,$F8,$00,$00
+$FF,$FF,$E1,$F9,$F8,$00,$00
+$70,$7F,$F3,$FB,$F8,$0F,$E0
+
+; handlebar right UDG row 2 - 7 UDGs
+
+$4F,$3F,$E3,$FF,$FC,$1F,$F0
+$1F,$8F,$F0,$FF,$FC,$5F,$F8
+$7F,$E7,$F8,$1F,$FE,$7F,$FC
+$7F,$F6,$7E,$01,$F8,$7F,$FF
+$7F,$F6,$3F,$80,$63,$FF,$FF
+$FF,$F6,$0D,$D3,$0F,$FF,$FF
+$FF,$FE,$05,$87,$7F,$FF,$FF
+$FF,$F4,$05,$AF,$FF,$FF,$FF
+
+; bike body UDG row 1 - 9 UDGs
+
+$01,$FF,$F4,$C3,$FF,$83,$17,$FF,$00
+$03,$FF,$FC,$DF,$FF,$FB,$17,$FF,$80
+$07,$FF,$F8,$9F,$FF,$FD,$1F,$FF,$80
+$07,$FF,$F8,$3F,$FF,$FD,$0F,$FF,$C0
+$0F,$FF,$F8,$3F,$FF,$FE,$0F,$FF,$C0
+$1F,$FF,$F8,$38,$FF,$1E,$0F,$FF,$E0
+$1F,$FF,$F9,$7A,$FF,$5E,$07,$FF,$E0
+$3F,$FF,$F1,$76,$FF,$6F,$87,$FF,$F0
+
+; bike body UDG row 2 - 9 UDGs
+
+$3F,$FF,$F3,$75,$FF,$AE,$87,$FF,$F0
+$7F,$FF,$E3,$75,$FF,$B6,$C3,$FF,$F8
+$FF,$FF,$E7,$ED,$FF,$B7,$C3,$FF,$F8
+$FF,$FF,$C7,$ED,$FF,$B7,$41,$FF,$FC
+$FF,$FF,$C7,$ED,$FF,$BB,$61,$FF,$FC
+$FF,$FF,$8E,$EB,$FF,$DB,$61,$FF,$FE
+$FF,$FF,$9C,$DB,$FF,$DD,$70,$FF,$FE
+$FF,$FF,$14,$DF,$FF,$FD,$71,$FF,$FF

@@ -1,0 +1,439 @@
+{
+  "sprites": {
+    "enemies": {
+      "start": 179,
+      "count": 17,
+      "reserve": 24
+    },
+    "helicopter": {
+      "start": 195,
+      "count": 2,
+      "reserve": 2
+    },
+    "tank": {
+      "start": 197,
+      "count": 4
+    },
+    "bolt": {
+      "start": 201,
+      "count": 1,
+      "reserve": 1
+    },
+    "explosion": {
+      "start": 202,
+      "count": 9,
+      "reserve": 9
+    },
+    "ui": {
+      "start": 211,
+      "count": 12,
+      "pool_slots": 12,
+      "source": "hardcoded",
+      "order": "$B0123456789",
+      "chr": {
+        "$": 211,
+        "B": 212,
+        "0": 213,
+        "1": 214,
+        "2": 215,
+        "3": 216,
+        "4": 217,
+        "5": 218,
+        "6": 219,
+        "7": 220,
+        "8": 221,
+        "9": 222
+      }
+    }
+  },
+  "chr_blank": 0,
+  "tree_strips": [
+    {
+      "depth": 0,
+      "rom_ptr": "$7246",
+      "flag": 0,
+      "wide": true,
+      "len": 18,
+      "chr_count": 36,
+      "screen_row": 0,
+      "offset": 0,
+      "y": 0,
+      "horizon_row": 10,
+      "transition_row": 10
+    },
+    {
+      "depth": 1,
+      "rom_ptr": "$738A",
+      "flag": 0,
+      "wide": true,
+      "len": 17,
+      "chr_count": 34,
+      "screen_row": 0,
+      "offset": 0,
+      "y": 0,
+      "horizon_row": 10,
+      "transition_row": 10
+    },
+    {
+      "depth": 2,
+      "rom_ptr": "$74CE",
+      "flag": 0,
+      "wide": false,
+      "len": 15,
+      "chr_count": 15,
+      "screen_row": 0,
+      "offset": 0,
+      "y": 0,
+      "horizon_row": 10,
+      "transition_row": 10
+    },
+    {
+      "depth": 3,
+      "rom_ptr": "$7570",
+      "flag": 0,
+      "wide": false,
+      "len": 14,
+      "chr_count": 14,
+      "screen_row": 0,
+      "offset": 0,
+      "y": 0,
+      "horizon_row": 10,
+      "transition_row": 10
+    },
+    {
+      "depth": 4,
+      "rom_ptr": "$7612",
+      "flag": 0,
+      "wide": false,
+      "len": 13,
+      "chr_count": 13,
+      "screen_row": 0,
+      "offset": 0,
+      "y": 0,
+      "horizon_row": 10,
+      "transition_row": 10
+    },
+    {
+      "depth": 5,
+      "rom_ptr": "$76B4",
+      "flag": 0,
+      "wide": false,
+      "len": 12,
+      "chr_count": 12,
+      "screen_row": 0,
+      "offset": 0,
+      "y": 0,
+      "horizon_row": 10,
+      "transition_row": 10
+    },
+    {
+      "depth": 6,
+      "rom_ptr": "$7756",
+      "flag": 0,
+      "wide": false,
+      "len": 11,
+      "chr_count": 11,
+      "screen_row": 1,
+      "offset": 22,
+      "y": 1,
+      "horizon_row": 9,
+      "transition_row": 9
+    },
+    {
+      "depth": 7,
+      "rom_ptr": "$77F8",
+      "flag": 0,
+      "wide": false,
+      "len": 10,
+      "chr_count": 10,
+      "screen_row": 2,
+      "offset": 44,
+      "y": 2,
+      "horizon_row": 8,
+      "transition_row": 8
+    },
+    {
+      "depth": 8,
+      "rom_ptr": "$789A",
+      "flag": 1,
+      "wide": false,
+      "len": 6,
+      "chr_count": 6,
+      "screen_row": 5,
+      "offset": 110,
+      "y": 5,
+      "horizon_row": 5,
+      "transition_row": 5
+    },
+    {
+      "depth": 9,
+      "rom_ptr": "$78D0",
+      "flag": 1,
+      "wide": false,
+      "len": 6,
+      "chr_count": 6,
+      "screen_row": 5,
+      "offset": 110,
+      "y": 5,
+      "horizon_row": 5,
+      "transition_row": 5
+    },
+    {
+      "depth": 10,
+      "rom_ptr": "$7906",
+      "flag": 1,
+      "wide": false,
+      "len": 6,
+      "chr_count": 6,
+      "screen_row": 5,
+      "offset": 110,
+      "y": 5,
+      "horizon_row": 5,
+      "transition_row": 5
+    },
+    {
+      "depth": 11,
+      "rom_ptr": "$793C",
+      "flag": 1,
+      "wide": false,
+      "len": 5,
+      "chr_count": 5,
+      "screen_row": 6,
+      "offset": 132,
+      "y": 6,
+      "horizon_row": 4,
+      "transition_row": 4
+    },
+    {
+      "depth": 12,
+      "rom_ptr": "$7972",
+      "flag": 1,
+      "wide": false,
+      "len": 5,
+      "chr_count": 5,
+      "screen_row": 6,
+      "offset": 132,
+      "y": 6,
+      "horizon_row": 4,
+      "transition_row": 4
+    },
+    {
+      "depth": 13,
+      "rom_ptr": "$79A8",
+      "flag": 1,
+      "wide": false,
+      "len": 5,
+      "chr_count": 5,
+      "screen_row": 6,
+      "offset": 132,
+      "y": 6,
+      "horizon_row": 4,
+      "transition_row": 4
+    },
+    {
+      "depth": 14,
+      "rom_ptr": "$79DE",
+      "flag": 1,
+      "wide": false,
+      "len": 4,
+      "chr_count": 4,
+      "screen_row": 6,
+      "offset": 132,
+      "y": 6,
+      "horizon_row": 4,
+      "transition_row": 0
+    },
+    {
+      "depth": 15,
+      "rom_ptr": "$7A14",
+      "flag": 1,
+      "wide": false,
+      "len": 3,
+      "chr_count": 3,
+      "screen_row": 7,
+      "offset": 154,
+      "y": 7,
+      "horizon_row": 3,
+      "transition_row": 0
+    },
+    {
+      "depth": 16,
+      "rom_ptr": "$7A4A",
+      "flag": 1,
+      "wide": false,
+      "len": 3,
+      "chr_count": 3,
+      "screen_row": 7,
+      "offset": 154,
+      "y": 7,
+      "horizon_row": 3,
+      "transition_row": 0
+    },
+    {
+      "depth": 17,
+      "rom_ptr": "$7A80",
+      "flag": 1,
+      "wide": false,
+      "len": 3,
+      "chr_count": 3,
+      "screen_row": 7,
+      "offset": 154,
+      "y": 7,
+      "horizon_row": 3,
+      "transition_row": 0
+    },
+    {
+      "depth": 18,
+      "rom_ptr": "$7AB6",
+      "flag": 1,
+      "wide": false,
+      "len": 3,
+      "chr_count": 3,
+      "screen_row": 7,
+      "offset": 154,
+      "y": 7,
+      "horizon_row": 3,
+      "transition_row": 0
+    },
+    {
+      "depth": 19,
+      "rom_ptr": "$7AEC",
+      "flag": 1,
+      "wide": false,
+      "len": 3,
+      "chr_count": 3,
+      "screen_row": 7,
+      "offset": 154,
+      "y": 7,
+      "horizon_row": 3,
+      "transition_row": 0
+    },
+    {
+      "depth": 20,
+      "rom_ptr": "$7B22",
+      "flag": 1,
+      "wide": false,
+      "len": 2,
+      "chr_count": 2,
+      "screen_row": 8,
+      "offset": 176,
+      "y": 8,
+      "horizon_row": 2,
+      "transition_row": 0
+    },
+    {
+      "depth": 21,
+      "rom_ptr": "$7B58",
+      "flag": 1,
+      "wide": false,
+      "len": 2,
+      "chr_count": 2,
+      "screen_row": 8,
+      "offset": 176,
+      "y": 8,
+      "horizon_row": 2,
+      "transition_row": 0
+    },
+    {
+      "depth": 22,
+      "rom_ptr": "$7B8E",
+      "flag": 1,
+      "wide": false,
+      "len": 2,
+      "chr_count": 2,
+      "screen_row": 8,
+      "offset": 176,
+      "y": 8,
+      "horizon_row": 2,
+      "transition_row": 0
+    },
+    {
+      "depth": 23,
+      "rom_ptr": "$7BC4",
+      "flag": 1,
+      "wide": false,
+      "len": 0,
+      "chr_count": 0,
+      "screen_row": 0,
+      "offset": 0,
+      "y": 0
+    }
+  ],
+  "trees_unique": 177,
+  "tree_chr_end": 179,
+  "handlebars": {
+    "bike_body_1": {
+      "start": 223,
+      "count": 9,
+      "label": "bike body UDG row 1 - 9 UDGs"
+    },
+    "bike_body_2": {
+      "start": 229,
+      "count": 9,
+      "label": "bike body UDG row 2 - 9 UDGs"
+    },
+    "handlebar_fwd_1": {
+      "start": 235,
+      "count": 7,
+      "label": "handlebar forward UDG row 1 - 7 UDGs"
+    },
+    "handlebar_fwd_2": {
+      "start": 242,
+      "count": 7,
+      "label": "handlebar forward UDG row 2 - 7 UDGs"
+    },
+    "handlebar_left_1": {
+      "start": 249,
+      "count": 7,
+      "label": "handlebar left UDG row 1 - 7 UDGs"
+    },
+    "handlebar_left_2": {
+      "start": 256,
+      "count": 7,
+      "label": "handlebar left UDG row 2 - 7 UDGs"
+    },
+    "handlebar_right_1": {
+      "start": 263,
+      "count": 7,
+      "label": "handlebar right UDG row 1 - 7 UDGs"
+    },
+    "handlebar_right_2": {
+      "start": 270,
+      "count": 7,
+      "label": "handlebar right UDG row 2 - 7 UDGs"
+    }
+  },
+  "handlebar_playfield": {
+    "bike_body_start": 223,
+    "bike_body_count": 18,
+    "handlebar_fwd_start": 235,
+    "handlebar_fwd_count": 14,
+    "fits_in_256": true
+  },
+  "bike_body_chr": {
+    "row1": [
+      223,
+      20,
+      224,
+      225,
+      20,
+      226,
+      227,
+      20,
+      228
+    ],
+    "row2": [
+      229,
+      20,
+      230,
+      231,
+      20,
+      232,
+      233,
+      20,
+      234
+    ]
+  },
+  "total_chr": 277,
+  "spare": -21
+}
