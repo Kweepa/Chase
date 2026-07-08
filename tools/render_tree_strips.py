@@ -58,14 +58,9 @@ def parse_tree_strips(path: Path) -> tuple[list[int], list[int], list[list[int]]
     text = path.read_text(encoding="utf-8")
     lens = [int(x) for x in re.search(r"tree_strip_len\s+!byte\s+([^\n]+)", text).group(1).split(",")]
     ym = re.search(r"tree_strip_y\s+!byte\s+([^\n]+)", text)
-    if ym:
-        screen_rows = [int(x) for x in ym.group(1).split(",")]
-    else:
-        offsets = [
-            int(x)
-            for x in re.search(r"tree_strip_offset\s+!byte\s+([^\n]+)", text).group(1).split(",")
-        ]
-        screen_rows = [o // 22 for o in offsets]
+    if not ym:
+        raise SystemExit(f"tree_strip_y not found in {path}")
+    screen_rows = [int(x) for x in ym.group(1).split(",")]
 
     chrs: list[list[int]] = []
     fgs: list[list[int]] = []

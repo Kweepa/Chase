@@ -8,72 +8,72 @@ gfx_pool_size = 277
 gfx_pool
     !byte $00, $00, $00, $00, $00, $00, $00, $00    ; chr 0 — blank
     !byte $00, $00, $00, $00, $00, $00, $00, $01    ; chr 1 — tree empty half
-    !byte $92, $55, $a9, $56, $dd, $dd, $dd, $dd    ; chr 2 — tree strip 0
-    !byte $db, $db, $db, $db, $db, $db, $db, $db    ; chr 3 — tree strip 0
-    !byte $dd, $dd, $fd, $fd, $fd, $fd, $fd, $ff    ; chr 4 — tree strip 0
-    !byte $db, $df, $df, $df, $df, $df, $df, $df    ; chr 5 — tree strip 0
-    !byte $ff, $ff, $ff, $ff, $df, $df, $dd, $dd    ; chr 6 — tree strip 0
-    !byte $df, $db, $db, $db, $fb, $fb, $fb, $fb    ; chr 7 — tree strip 0
-    !byte $dd, $dd, $dd, $dd, $dd, $fd, $fd, $fd    ; chr 8 — tree strip 0
-    !byte $fb, $fb, $ff, $df, $df, $df, $df, $df    ; chr 9 — tree strip 0
-    !byte $fd, $fd, $fd, $fd, $fd, $fd, $fd, $df    ; chr 10 — tree strip 0
-    !byte $df, $db, $db, $db, $db, $db, $db, $fb    ; chr 11 — tree strip 0
-    !byte $df, $df, $df, $df, $df, $df, $dd, $dd    ; chr 12 — tree strip 0
-    !byte $fb, $fb, $fb, $fb, $ff, $ff, $ff, $df    ; chr 13 — tree strip 0
-    !byte $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd    ; chr 14 — tree strip 0
-    !byte $df, $df, $df, $df, $db, $db, $db, $db    ; chr 15 — tree strip 0
-    !byte $ff, $ff, $df, $df, $df, $df, $df, $df    ; chr 16 — tree strip 0
-    !byte $db, $db, $db, $db, $df, $df, $df, $df    ; chr 17 — tree strip 0
-    !byte $df, $dd, $fd, $ff, $ff, $ff, $ff, $ff    ; chr 18 — tree strip 0
-    !byte $df, $df, $df, $ff, $ff, $ff, $ff, $ff    ; chr 19 — tree strip 0
-    !byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff    ; chr 20 — tree strip 0
-    !byte $ff, $fb, $fb, $7b, $7b, $7f, $ff, $ff    ; chr 21 — tree strip 0
-    !byte $ff, $ff, $ff, $ff, $ff, $ff, $fd, $fd    ; chr 22 — tree strip 0
-    !byte $ed, $ed, $ed, $ed, $ed, $ef, $ef, $ef    ; chr 23 — tree strip 0
-    !byte $ff, $ff, $ff, $df, $df, $df, $df, $df    ; chr 24 — tree strip 0
-    !byte $d7, $d7, $d7, $f7, $f7, $f7, $f7, $f7    ; chr 25 — tree strip 0
-    !byte $ff, $ff, $ef, $ef, $ef, $ef, $ef, $ef    ; chr 26 — tree strip 0
-    !byte $f7, $f7, $f7, $f7, $f7, $f7, $f7, $d7    ; chr 27 — tree strip 0
-    !byte $ef, $ee, $ee, $ee, $ee, $ee, $fe, $fe    ; chr 28 — tree strip 0
-    !byte $d7, $d7, $d7, $d7, $d7, $d7, $d7, $d7    ; chr 29 — tree strip 0
-    !byte $fe, $fe, $fe, $fe, $fe, $ff, $ff, $ff    ; chr 30 — tree strip 0
-    !byte $dd, $dd, $dd, $dd, $df, $df, $df, $df    ; chr 31 — tree strip 0
-    !byte $ff, $ef, $ef, $ef, $ef, $ef, $ef, $ef    ; chr 32 — tree strip 0
-    !byte $df, $df, $df, $df, $df, $df, $df, $df    ; chr 33 — tree strip 0
-    !byte $ef, $fb, $fb, $fb, $fb, $fb, $fb, $7b    ; chr 34 — tree strip 0
-    !byte $1f, $1f, $1f, $1f, $1f, $1e, $1e, $1e    ; chr 35 — tree strip 1
-    !byte $ec, $ec, $fc, $fc, $ec, $ec, $ec, $ec    ; chr 36 — tree strip 1
-    !byte $1e, $1e, $1e, $0e, $0e, $0f, $0f, $0f    ; chr 37 — tree strip 1
-    !byte $ec, $ec, $ec, $ec, $fc, $fc, $fc, $fc    ; chr 38 — tree strip 1
-    !byte $0f, $0f, $0f, $0f, $0f, $0e, $0e, $0e    ; chr 39 — tree strip 1
-    !byte $ec, $ec, $ec, $ec, $ec, $ec, $ec, $ee    ; chr 40 — tree strip 1
-    !byte $0e, $0e, $0e, $0f, $0f, $0f, $0f, $0f    ; chr 41 — tree strip 1
-    !byte $ee, $fe, $fe, $fe, $fe, $7e, $7e, $7e    ; chr 42 — tree strip 1
-    !byte $0f, $0f, $0f, $0f, $0e, $0e, $0e, $0e    ; chr 43 — tree strip 1
-    !byte $6e, $6e, $6e, $ec, $ec, $ec, $ec, $ec    ; chr 44 — tree strip 1
-    !byte $0e, $1e, $1e, $1f, $1f, $1f, $1f, $1f    ; chr 45 — tree strip 1
-    !byte $ec, $ec, $fc, $fc, $7c, $7c, $7c, $7c    ; chr 46 — tree strip 1
-    !byte $1f, $1f, $1f, $1f, $1e, $1e, $1e, $1e    ; chr 47 — tree strip 1
-    !byte $7c, $6c, $ec, $ec, $ec, $ec, $ee, $ee    ; chr 48 — tree strip 1
-    !byte $1e, $1e, $1e, $1e, $1e, $1e, $1e, $1f    ; chr 49 — tree strip 1
-    !byte $ee, $fe, $fe, $fe, $fe, $fe, $fe, $ee    ; chr 50 — tree strip 1
-    !byte $1f, $1f, $1f, $1f, $1e, $1f, $1f, $1f    ; chr 51 — tree strip 1
-    !byte $ee, $ae, $ae, $ae, $ee, $ee, $ee, $ee    ; chr 52 — tree strip 1
-    !byte $1f, $1f, $1f, $1f, $1f, $1f, $1f, $1f    ; chr 53 — tree strip 1
-    !byte $ee, $fe, $fe, $fe, $fe, $fe, $fe, $fe    ; chr 54 — tree strip 1
-    !byte $fe, $fe, $fe, $fe, $fe, $ee, $ee, $ee    ; chr 55 — tree strip 1
-    !byte $1f, $1f, $1f, $1f, $1f, $1d, $1d, $1d    ; chr 56 — tree strip 1
-    !byte $ee, $ee, $ee, $ee, $ee, $fe, $fe, $fe    ; chr 57 — tree strip 1
-    !byte $1d, $1d, $1d, $1d, $1d, $1d, $1f, $1f    ; chr 58 — tree strip 1
-    !byte $fe, $fe, $fe, $fe, $ee, $6e, $6e, $6e    ; chr 59 — tree strip 1
-    !byte $1d, $1d, $1d, $1f, $1f, $1f, $1f, $1f    ; chr 60 — tree strip 1
-    !byte $6e, $6e, $6e, $7e, $7e, $7e, $7e, $7e    ; chr 61 — tree strip 1
-    !byte $1f, $1f, $1d, $1d, $1d, $1f, $1d, $1d    ; chr 62 — tree strip 1
-    !byte $fe, $fe, $fe, $fe, $ee, $ee, $ee, $ee    ; chr 63 — tree strip 1
-    !byte $1d, $1d, $1d, $1d, $1d, $1d, $1d, $1f    ; chr 64 — tree strip 1
-    !byte $ee, $ee, $6e, $6e, $6e, $ee, $ee, $ee    ; chr 65 — tree strip 1
-    !byte $1f, $1b, $1f, $0f, $0f, $07, $03, $00    ; chr 66 — tree strip 1
-    !byte $ee, $ee, $fe, $fe, $fc, $f8, $f0, $00    ; chr 67 — tree strip 1
+    !byte $92, $55, $a9, $56, $dd, $dd, $dd, $dd    ; chr 2 — tree strip 0 L
+    !byte $dd, $dd, $fd, $fd, $fd, $fd, $fd, $ff    ; chr 3 — tree strip 0 L
+    !byte $ff, $ff, $ff, $ff, $df, $df, $dd, $dd    ; chr 4 — tree strip 0 L
+    !byte $dd, $dd, $dd, $dd, $dd, $fd, $fd, $fd    ; chr 5 — tree strip 0 L
+    !byte $fd, $fd, $fd, $fd, $fd, $fd, $fd, $df    ; chr 6 — tree strip 0 L
+    !byte $df, $df, $df, $df, $df, $df, $dd, $dd    ; chr 7 — tree strip 0 L
+    !byte $fd, $fd, $fd, $fd, $fd, $fd, $fd, $fd    ; chr 8 — tree strip 0 L
+    !byte $ff, $ff, $df, $df, $df, $df, $df, $df    ; chr 9 — tree strip 0 L
+    !byte $df, $dd, $fd, $ff, $ff, $ff, $ff, $ff    ; chr 10 — tree strip 0 L
+    !byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff    ; chr 11 — tree strip 0 L
+    !byte $ff, $ff, $ff, $ff, $ff, $ff, $fd, $fd    ; chr 12 — tree strip 0 L
+    !byte $ed, $ed, $ed, $ed, $ed, $ef, $ef, $ef    ; chr 13 — tree strip 0 L
+    !byte $ff, $ff, $ef, $ef, $ef, $ef, $ef, $ef    ; chr 14 — tree strip 0 L
+    !byte $ef, $ee, $ee, $ee, $ee, $ee, $fe, $fe    ; chr 15 — tree strip 0 L
+    !byte $fe, $fe, $fe, $fe, $fe, $ff, $ff, $ff    ; chr 16 — tree strip 0 L
+    !byte $ff, $ef, $ef, $ef, $ef, $ef, $ef, $ef    ; chr 17 — tree strip 0 L
+    !byte $ef, $fb, $fb, $fb, $fb, $fb, $fb, $7b    ; chr 18 — tree strip 0 L
+    !byte $db, $db, $db, $db, $db, $db, $db, $db    ; chr 19 — tree strip 0 R
+    !byte $db, $df, $df, $df, $df, $df, $df, $df    ; chr 20 — tree strip 0 R
+    !byte $df, $db, $db, $db, $fb, $fb, $fb, $fb    ; chr 21 — tree strip 0 R
+    !byte $fb, $fb, $ff, $df, $df, $df, $df, $df    ; chr 22 — tree strip 0 R
+    !byte $df, $db, $db, $db, $db, $db, $db, $fb    ; chr 23 — tree strip 0 R
+    !byte $fb, $fb, $fb, $fb, $ff, $ff, $ff, $df    ; chr 24 — tree strip 0 R
+    !byte $df, $df, $df, $df, $db, $db, $db, $db    ; chr 25 — tree strip 0 R
+    !byte $db, $db, $db, $db, $df, $df, $df, $df    ; chr 26 — tree strip 0 R
+    !byte $df, $df, $df, $ff, $ff, $ff, $ff, $ff    ; chr 27 — tree strip 0 R
+    !byte $ff, $fb, $fb, $7b, $7b, $7f, $ff, $ff    ; chr 28 — tree strip 0 R
+    !byte $ff, $ff, $ff, $df, $df, $df, $df, $df    ; chr 29 — tree strip 0 R
+    !byte $d7, $d7, $d7, $f7, $f7, $f7, $f7, $f7    ; chr 30 — tree strip 0 R
+    !byte $f7, $f7, $f7, $f7, $f7, $f7, $f7, $d7    ; chr 31 — tree strip 0 R
+    !byte $d7, $d7, $d7, $d7, $d7, $d7, $d7, $d7    ; chr 32 — tree strip 0 R
+    !byte $dd, $dd, $dd, $dd, $df, $df, $df, $df    ; chr 33 — tree strip 0 R
+    !byte $df, $df, $df, $df, $df, $df, $df, $df    ; chr 34 — tree strip 0 R
+    !byte $1f, $1f, $1f, $1f, $1f, $1e, $1e, $1e    ; chr 35 — tree strip 1 L
+    !byte $1e, $1e, $1e, $0e, $0e, $0f, $0f, $0f    ; chr 36 — tree strip 1 L
+    !byte $0f, $0f, $0f, $0f, $0f, $0e, $0e, $0e    ; chr 37 — tree strip 1 L
+    !byte $0e, $0e, $0e, $0f, $0f, $0f, $0f, $0f    ; chr 38 — tree strip 1 L
+    !byte $0f, $0f, $0f, $0f, $0e, $0e, $0e, $0e    ; chr 39 — tree strip 1 L
+    !byte $0e, $1e, $1e, $1f, $1f, $1f, $1f, $1f    ; chr 40 — tree strip 1 L
+    !byte $1f, $1f, $1f, $1f, $1e, $1e, $1e, $1e    ; chr 41 — tree strip 1 L
+    !byte $1e, $1e, $1e, $1e, $1e, $1e, $1e, $1f    ; chr 42 — tree strip 1 L
+    !byte $1f, $1f, $1f, $1f, $1e, $1f, $1f, $1f    ; chr 43 — tree strip 1 L
+    !byte $1f, $1f, $1f, $1f, $1f, $1f, $1f, $1f    ; chr 44 — tree strip 1 L
+    !byte $1f, $1f, $1f, $1f, $1f, $1d, $1d, $1d    ; chr 45 — tree strip 1 L
+    !byte $1d, $1d, $1d, $1d, $1d, $1d, $1f, $1f    ; chr 46 — tree strip 1 L
+    !byte $1d, $1d, $1d, $1f, $1f, $1f, $1f, $1f    ; chr 47 — tree strip 1 L
+    !byte $1f, $1f, $1d, $1d, $1d, $1f, $1d, $1d    ; chr 48 — tree strip 1 L
+    !byte $1d, $1d, $1d, $1d, $1d, $1d, $1d, $1f    ; chr 49 — tree strip 1 L
+    !byte $1f, $1b, $1f, $0f, $0f, $07, $03, $00    ; chr 50 — tree strip 1 L
+    !byte $ec, $ec, $fc, $fc, $ec, $ec, $ec, $ec    ; chr 51 — tree strip 1 R
+    !byte $ec, $ec, $ec, $ec, $fc, $fc, $fc, $fc    ; chr 52 — tree strip 1 R
+    !byte $ec, $ec, $ec, $ec, $ec, $ec, $ec, $ee    ; chr 53 — tree strip 1 R
+    !byte $ee, $fe, $fe, $fe, $fe, $7e, $7e, $7e    ; chr 54 — tree strip 1 R
+    !byte $6e, $6e, $6e, $ec, $ec, $ec, $ec, $ec    ; chr 55 — tree strip 1 R
+    !byte $ec, $ec, $fc, $fc, $7c, $7c, $7c, $7c    ; chr 56 — tree strip 1 R
+    !byte $7c, $6c, $ec, $ec, $ec, $ec, $ee, $ee    ; chr 57 — tree strip 1 R
+    !byte $ee, $fe, $fe, $fe, $fe, $fe, $fe, $ee    ; chr 58 — tree strip 1 R
+    !byte $ee, $ae, $ae, $ae, $ee, $ee, $ee, $ee    ; chr 59 — tree strip 1 R
+    !byte $ee, $fe, $fe, $fe, $fe, $fe, $fe, $fe    ; chr 60 — tree strip 1 R
+    !byte $fe, $fe, $fe, $fe, $fe, $ee, $ee, $ee    ; chr 61 — tree strip 1 R
+    !byte $ee, $ee, $ee, $ee, $ee, $fe, $fe, $fe    ; chr 62 — tree strip 1 R
+    !byte $fe, $fe, $fe, $fe, $ee, $6e, $6e, $6e    ; chr 63 — tree strip 1 R
+    !byte $6e, $6e, $6e, $7e, $7e, $7e, $7e, $7e    ; chr 64 — tree strip 1 R
+    !byte $fe, $fe, $fe, $fe, $ee, $ee, $ee, $ee    ; chr 65 — tree strip 1 R
+    !byte $ee, $ee, $6e, $6e, $6e, $ee, $ee, $ee    ; chr 66 — tree strip 1 R
+    !byte $ee, $ee, $fe, $fe, $fc, $f8, $f0, $00    ; chr 67 — tree strip 1 R
     !byte $6f, $6f, $6b, $7b, $7b, $7b, $7b, $7b    ; chr 68 — tree strip 2
     !byte $7b, $7b, $7b, $7f, $6f, $6f, $6f, $6f    ; chr 69 — tree strip 2
     !byte $6f, $6f, $7f, $7b, $7b, $7b, $7b, $7b    ; chr 70 — tree strip 2
@@ -205,8 +205,8 @@ gfx_pool
     !byte $80, $c0, $f8, $fe, $ff, $fe, $0f, $3a    ; chr 196 — helicopter 1
     !byte $1f, $07, $7f, $e0, $7f, $1c, $80, $ff    ; chr 197 — tank
     !byte $80, $00, $ff, $07, $fc, $70, $cd, $3a    ; chr 198 — tank 1
-    !byte $03, $03, $0b, $60, $0b, $00, $80, $e3    ; chr 199 — tank obscured
-    !byte $80, $00, $8b, $03, $88, $60, $8d, $22    ; chr 200 — tank obscured 1
+    !byte $05, $04, $04, $60, $04, $04, $80, $a0    ; chr 199 — tank obscured
+    !byte $00, $00, $04, $00, $04, $20, $84, $20    ; chr 200 — tank obscured 1
     !byte $c3, $c3, $c3, $c3, $e7, $7e, $3c, $7e    ; chr 201 — bolt
     !byte $0e, $1d, $3a, $75, $ea, $f5, $ea, $d5    ; chr 202 — explosion
     !byte $ea, $d5, $ea, $75, $3a, $35, $1a, $1d    ; chr 203 — explosion 1
@@ -290,6 +290,6 @@ gfx_pool_end = *
 bike_body_width = 9
 bike_body_height = 2
 bike_body_chr
-    !byte 223, 20, 224, 225, 20, 226, 227, 20, 228    ; row 1 (top)
-    !byte 229, 20, 230, 231, 20, 232, 233, 20, 234    ; row 2 (bottom)
+    !byte 223, 11, 224, 225, 11, 226, 227, 11, 228    ; row 1 (top)
+    !byte 229, 11, 230, 231, 11, 232, 233, 11, 234    ; row 2 (bottom)
 

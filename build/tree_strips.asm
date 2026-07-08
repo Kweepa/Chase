@@ -4,29 +4,26 @@
 ;   $6D73 — 25 strip gfx refs (flag + LE addr; first entry repeated)
 ;   flag 0 = huge/large, 1 = small; attr + 8-byte UDG, repeat
 ;   Table LE addr − 2 = first attr byte; next strip addr − 2 = end
-;   Strips 0–1 are 2× wide (left column units, then right; zip by row).
-;
+;   Strips 0–3: huge trunks split L/R (was interleaved 2× wide on Spectrum).
 ; VIC tables:
 ;   tree_strip_ptr    → column of chr indices (no chr 0 in strips)
-;   tree_strip_fg_ptr → matching ink per chr (0 = hard-coded huge 0–1)
-;   tree_strip_y      → playfield char row of strip top (25 entries; 23–24 = empty row)
-;   tree_strip_offset → playfield byte offset of strip top ($FF = empty-row sentinel)
+;   tree_strip_fg_ptr → matching ink per chr
+;   tree_strip_y      → playfield char row of strip top (28 entries; last two = empty row)
 ;   tree_strip_len    → vertical row count per depth
 
-tree_strip_count = 24
+tree_strip_count = 26
 
 tree_strip_len
-    !byte 18, 17, 15, 14, 13, 12, 11, 10, 6, 6, 6, 5, 5, 5, 4, 3, 3, 3, 3, 3, 2, 2, 2, 0, 0
+    !byte 18, 18, 17, 17, 15, 14, 13, 12, 11, 10, 6, 6, 6, 5, 5, 5, 4, 3, 3, 3, 3, 3, 2, 2, 2, 0, 0, 0
 
 tree_strip_y
-    !byte 0, 0, 0, 0, 0, 0, 1, 2, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 18, 18
-
-tree_strip_offset
-    !byte 0, 0, 0, 0, 0, 0, 22, 44, 110, 110, 110, 132, 132, 132, 132, 154, 154, 154, 154, 154, 176, 176, 176, 255, 255
+    !byte 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 0, 18, 18
 
 tree_strip_ptr
-    !word tree_strip_0_chr
-    !word tree_strip_1_chr
+    !word tree_strip_0_left_chr
+    !word tree_strip_0_right_chr
+    !word tree_strip_1_left_chr
+    !word tree_strip_1_right_chr
     !word tree_strip_2_chr
     !word tree_strip_3_chr
     !word tree_strip_4_chr
@@ -51,8 +48,10 @@ tree_strip_ptr
     !word tree_strip_23_chr
 
 tree_strip_fg_ptr
-    !word tree_strip_0_fg
-    !word tree_strip_1_fg
+    !word tree_strip_0_left_fg
+    !word tree_strip_0_right_fg
+    !word tree_strip_1_left_fg
+    !word tree_strip_1_right_fg
     !word tree_strip_2_fg
     !word tree_strip_3_fg
     !word tree_strip_4_fg
@@ -76,153 +75,165 @@ tree_strip_fg_ptr
     !word tree_strip_22_fg
     !word tree_strip_23_fg
 
-; strip 0 — Spectrum $7246, 18 rows, 36 chrs
-tree_strip_0_chr
-    !byte 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
-    !byte 18, 19, 20, 21, 22, 20, 23, 24, 20, 25, 26, 27, 28, 29, 30, 31
-    !byte 32, 33, 34, 33
-tree_strip_0_fg
-    !byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    !byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    !byte 0, 0, 0, 0
+; depth 0 left — Spectrum $7246, 18 rows, 18 chrs
+tree_strip_0_left_chr
+    !byte 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 11, 14, 15, 16
+    !byte 17, 18
+tree_strip_0_left_fg
+    !byte 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    !byte 4, 4
 
-; strip 1 — Spectrum $738A, 17 rows, 34 chrs
-tree_strip_1_chr
-    !byte 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50
-    !byte 51, 52, 53, 54, 35, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65
-    !byte 66, 67
-tree_strip_1_fg
-    !byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    !byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    !byte 0, 0
+; depth 0 right — Spectrum $7246, 18 rows, 18 chrs
+tree_strip_0_right_chr
+    !byte 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 11, 29, 30, 31, 32, 33
+    !byte 34, 34
+tree_strip_0_right_fg
+    !byte 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+    !byte 2, 2
 
-; strip 2 — Spectrum $74CE, 15 rows, 15 chrs
+; depth 1 left — Spectrum $738A, 17 rows, 17 chrs
+tree_strip_1_left_chr
+    !byte 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 35, 45, 46, 47, 48, 49
+    !byte 50
+tree_strip_1_left_fg
+    !byte 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+    !byte 4
+
+; depth 1 right — Spectrum $738A, 17 rows, 17 chrs
+tree_strip_1_right_chr
+    !byte 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66
+    !byte 67
+tree_strip_1_right_fg
+    !byte 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+    !byte 2
+
+; depth 2 — Spectrum $74CE, 15 rows, 15 chrs
 tree_strip_2_chr
     !byte 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82
 tree_strip_2_fg
     !byte 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 
-; strip 3 — Spectrum $7570, 14 rows, 14 chrs
+; depth 3 — Spectrum $7570, 14 rows, 14 chrs
 tree_strip_3_chr
     !byte 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96
 tree_strip_3_fg
     !byte 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 
-; strip 4 — Spectrum $7612, 13 rows, 13 chrs
+; depth 4 — Spectrum $7612, 13 rows, 13 chrs
 tree_strip_4_chr
     !byte 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109
 tree_strip_4_fg
     !byte 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 
-; strip 5 — Spectrum $76B4, 12 rows, 12 chrs
+; depth 5 — Spectrum $76B4, 12 rows, 12 chrs
 tree_strip_5_chr
     !byte 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121
 tree_strip_5_fg
     !byte 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2
 
-; strip 6 — Spectrum $7756, 11 rows, 11 chrs
+; depth 6 — Spectrum $7756, 11 rows, 11 chrs
 tree_strip_6_chr
     !byte 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132
 tree_strip_6_fg
     !byte 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2
 
-; strip 7 — Spectrum $77F8, 10 rows, 10 chrs
+; depth 7 — Spectrum $77F8, 10 rows, 10 chrs
 tree_strip_7_chr
     !byte 133, 134, 135, 136, 137, 138, 138, 138, 138, 139
 tree_strip_7_fg
     !byte 5, 5, 5, 5, 5, 2, 2, 2, 2, 2
 
-; strip 8 — Spectrum $789A, 6 rows, 6 chrs
+; depth 8 — Spectrum $789A, 6 rows, 6 chrs
 tree_strip_8_chr
     !byte 140, 141, 138, 138, 138, 142
 tree_strip_8_fg
     !byte 5, 5, 2, 2, 2, 2
 
-; strip 9 — Spectrum $78D0, 6 rows, 6 chrs
+; depth 9 — Spectrum $78D0, 6 rows, 6 chrs
 tree_strip_9_chr
     !byte 143, 144, 145, 138, 138, 146
 tree_strip_9_fg
     !byte 5, 5, 5, 2, 2, 2
 
-; strip 10 — Spectrum $7906, 6 rows, 6 chrs
+; depth 10 — Spectrum $7906, 6 rows, 6 chrs
 tree_strip_10_chr
     !byte 147, 148, 149, 138, 138, 150
 tree_strip_10_fg
     !byte 5, 5, 5, 2, 2, 2
 
-; strip 11 — Spectrum $793C, 5 rows, 5 chrs
+; depth 11 — Spectrum $793C, 5 rows, 5 chrs
 tree_strip_11_chr
     !byte 151, 152, 138, 138, 153
 tree_strip_11_fg
     !byte 5, 5, 2, 2, 2
 
-; strip 12 — Spectrum $7972, 5 rows, 5 chrs
+; depth 12 — Spectrum $7972, 5 rows, 5 chrs
 tree_strip_12_chr
     !byte 154, 155, 156, 157, 158
 tree_strip_12_fg
     !byte 5, 5, 5, 2, 2
 
-; strip 13 — Spectrum $79A8, 5 rows, 5 chrs
+; depth 13 — Spectrum $79A8, 5 rows, 5 chrs
 tree_strip_13_chr
     !byte 159, 160, 161, 157, 162
 tree_strip_13_fg
     !byte 5, 5, 5, 2, 2
 
-; strip 14 — Spectrum $79DE, 4 rows, 4 chrs
+; depth 14 — Spectrum $79DE, 4 rows, 4 chrs
 tree_strip_14_chr
     !byte 163, 164, 165, 157
 tree_strip_14_fg
     !byte 5, 5, 5, 2
 
-; strip 15 — Spectrum $7A14, 3 rows, 3 chrs
+; depth 15 — Spectrum $7A14, 3 rows, 3 chrs
 tree_strip_15_chr
     !byte 166, 167, 157
 tree_strip_15_fg
     !byte 5, 5, 2
 
-; strip 16 — Spectrum $7A4A, 3 rows, 3 chrs
+; depth 16 — Spectrum $7A4A, 3 rows, 3 chrs
 tree_strip_16_chr
     !byte 168, 169, 157
 tree_strip_16_fg
     !byte 5, 5, 2
 
-; strip 17 — Spectrum $7A80, 3 rows, 3 chrs
+; depth 17 — Spectrum $7A80, 3 rows, 3 chrs
 tree_strip_17_chr
     !byte 170, 171, 157
 tree_strip_17_fg
     !byte 5, 5, 2
 
-; strip 18 — Spectrum $7AB6, 3 rows, 3 chrs
+; depth 18 — Spectrum $7AB6, 3 rows, 3 chrs
 tree_strip_18_chr
     !byte 172, 173, 157
 tree_strip_18_fg
     !byte 5, 5, 2
 
-; strip 19 — Spectrum $7AEC, 3 rows, 3 chrs
+; depth 19 — Spectrum $7AEC, 3 rows, 3 chrs
 tree_strip_19_chr
     !byte 163, 174, 157
 tree_strip_19_fg
     !byte 5, 5, 2
 
-; strip 20 — Spectrum $7B22, 2 rows, 2 chrs
+; depth 20 — Spectrum $7B22, 2 rows, 2 chrs
 tree_strip_20_chr
     !byte 175, 157
 tree_strip_20_fg
     !byte 5, 2
 
-; strip 21 — Spectrum $7B58, 2 rows, 2 chrs
+; depth 21 — Spectrum $7B58, 2 rows, 2 chrs
 tree_strip_21_chr
     !byte 176, 157
 tree_strip_21_fg
     !byte 5, 2
 
-; strip 22 — Spectrum $7B8E, 2 rows, 2 chrs
+; depth 22 — Spectrum $7B8E, 2 rows, 2 chrs
 tree_strip_22_chr
     !byte 177, 178
 tree_strip_22_fg
     !byte 5, 2
 
-; strip 23 — Spectrum $7BC4, 0 rows, 0 chrs
+; depth 23 — Spectrum $7BC4, empty
 tree_strip_23_chr
 tree_strip_23_fg
 

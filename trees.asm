@@ -72,31 +72,11 @@ ScrollTrees
 
     rts
 
-map_row_tab
-    !word map_base + 0
-    !word map_base + row_stride * 1
-    !word map_base + row_stride * 2
-    !word map_base + row_stride * 3
-    !word map_base + row_stride * 4
-    !word map_base + row_stride * 5
-    !word map_base + row_stride * 6
-    !word map_base + row_stride * 7
-    !word map_base + row_stride * 8
-    !word map_base + row_stride * 9
-    !word map_base + row_stride * 10
-    !word map_base + row_stride * 11
-    !word map_base + row_stride * 12
-    !word map_base + row_stride * 13
-    !word map_base + row_stride * 14
-    !word map_base + row_stride * 15
-    !word map_base + row_stride * 16
-    !word map_base + row_stride * 17
-    !word map_base + row_stride * 18
-    !word map_base + row_stride * 19
-    !word map_base + row_stride * 20
-    !word map_base + row_stride * 21
-    !word map_base + row_stride * 22
-    !word map_base + row_stride * 23
+tree_depth_to_strip_index
+    !byte 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 26
+
+max_height_per_column
+    !byte 18, 18, 18, 18, 18, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 18, 18, 18, 18, 18, 18, 18
 
 FindClosestTrees
     ; go through the map for each column and find the first tree, going front to back
@@ -133,12 +113,34 @@ FindClosestTrees
     bne -
 
 ++
-    lda tree_row
     ldx tree_col
+    lda tree_row
     sta first_tree_per_column,x
+    tay
+    lda tree_depth_to_strip_index,y
+    sta tree_strip_per_column,x
 
     dec tree_col
     bpl ---
+
+    ; fatten the huge trees (expand to the right)
+    ldx #20 ; tree_col
+-
+    ; for a 0 or 2 in the left column, add 1 or 3 to the right column
+    lda tree_strip_per_column,x
+    cmp #4
+    bcs +
+    adc #1 ; carry clear
+    sta tree_strip_per_column+1,x
++
+    ; for a 0 or 1 in the left column, extend to the right column
+    lda first_tree_per_column,x
+    cmp #2
+    bcs +
+    sta first_tree_per_column+1,x
++
+    dex
+    bpl -
 
     rts
 
@@ -159,7 +161,7 @@ DrawTrees
 
 DrawTreeStrip
     ldx tree_col
-    lda first_tree_per_column,x
+    lda tree_strip_per_column,x
     tax
 
     ; draw empty column until we reach the top of the tree
@@ -169,6 +171,13 @@ DrawTreeStrip
     sta scr_ptr
 
     lda tree_strip_y,x
+
+    ldy tree_col
+    cmp max_height_per_column,Y
+    bcc +
+    sbc #2
++
+
     tax
     beq tree_skip_first_clear
     ldy #0
@@ -193,12 +202,10 @@ tree_skip_first_clear
     eor #$84
     sta col_ptr+1
 
-draw_single_or_double_strip
-
     ; resolve tree_strip_ptr[depth] / tree_strip_fg_ptr[depth] -> chr/fg data
     ldx tree_col
-    lda first_tree_per_column,x
-    cmp #24
+    lda tree_strip_per_column,x
+    cmp #26
     bcc +
     rts
 +
@@ -215,63 +222,13 @@ draw_single_or_double_strip
     sta tree_col_ptr+1
 
     lda tree_strip_len,x
-    sta tree_tmp
 
-    ; check for huge trees
-    cpx #2
-    bcs draw_single_strip
-
-draw_double_strip
-
-    lda tree_tmp
-    asl
-    sta tree_tmp
-
-    ldx #0
--
-    txa
-    tay
-    lda (tree_ptr),y
-    ldy #0
-    sta (scr_ptr),y
-    lda #PURPLE
-    sta (col_ptr),y    
-    inx
-    txa
-    tay
-    lda (tree_ptr),y
-    ldy #1
-    sta (scr_ptr),y
-    lda #RED
-    sta (col_ptr),y
-    inx
-
-    lda scr_ptr
-    clc
-    adc #22
-    sta scr_ptr
-    sta col_ptr
+    ldy tree_col
+    cmp max_height_per_column,y ; avoid drawing over the handlebars, this only needs to work for the huge trees
     bcc +
-    inc scr_ptr+1
-    inc col_ptr+1
+    sbc #2 ; carry set already
 +
-    cpx tree_tmp
-    bne -
-
-    cpx #36  ; check for full height tree
-    beq +
-
-    ; fill in the last two bits
-    lda #0
-    tay
-    sta (scr_ptr),y
-    iny
-    sta (scr_ptr),y
-
-+
-    rts
-
-draw_single_strip
+    sta tree_tmp
 
     ldx #0
 -
@@ -299,13 +256,14 @@ draw_single_strip
     cpx tree_tmp
     bne -
 
-    ; now finish with empty tiles until we reach screen row 18
+    ; now finish with empty tiles until we reach screen row 18 (or 16 when over the handlebars)
 
     ldx tree_col
-    lda first_tree_per_column,x
+    lda tree_strip_per_column,x
     tax
 
-    lda #18
+    ldy tree_col    
+    lda max_height_per_column,y
     sec
     sbc tree_tmp
     sbc tree_strip_y,x
@@ -349,4 +307,6 @@ tree_plant_try  !byte 0
 tree_tmp        !byte 0
 
 first_tree_per_column
+    !fill 22, 0
+tree_strip_per_column
     !fill 22, 0
