@@ -1,14 +1,12 @@
 !zone trees
 
 InitTrees
-    lda #0
-    sta scroll_tick
-
     ldx #0
     txa
 -
     sta map_base,x
     sta map_base+$100,x
+    sta map_base+$200,x
     inx
     bne -
 
@@ -22,15 +20,62 @@ InitTrees
 
     rts
 
-ScrollTrees
+ClearDistantTrees
+    ; clear distant row
+    ldx #map_cols - 1
+    lda #0
+-
+    sta map_base + map_cols * (map_rows - 1),x
+    dex
+    bpl -
 
-    ; uses tables to scroll and perspective shunt at the same time
+    rts
+
+PlantTrees
+
+    ; every other frame
+    lda frame_tick
+    and #1
+    bne ++
+
+    ; fill with random trees based on density
+    ldy sector
+    ldx #(map_cols - 1)
+-
+    jsr GetRandom16 ; with random8 we see the patterns easily
+    cmp tree_density-1,y
+    bcs +
+    lda #1
+    sta map_base + map_cols * (map_rows - 1),x
+    dex ; no two trees together
++
+    dex
+    bpl -
+
+++
+
+    rts
+
+MoveTrees
+
+    ; uses tables to move forward and perspective shunt at the same time
 
     ; choose forward, left or right as steering dictates
-    lda #<scroll_tab_forward
-    sta scroll_ptr
-    lda #>scroll_tab_forward
-    sta scroll_ptr + 1
+
+    ; every other frame, merge in turning
+    lda frame_tick
+    and #1
+    bne + ; if it's 1, we use the center table
+    ldx steer
+    inx
+    txa
++
+    asl
+    tax
+    lda tree_movement_tables,x
+    sta tree_move_ptr
+    lda tree_movement_tables+1,x
+    sta tree_move_ptr+1
 
     lda #<map_base
     sta map_ptr
@@ -39,50 +84,42 @@ ScrollTrees
 
 -
     ldy #0
-    lda (scroll_ptr),y
+    lda (tree_move_ptr),y
     beq +
     tay
     lda (map_ptr),y
 +
     ldy #0
     sta (map_ptr),y
+    sta temp2
     inc map_ptr
     bne +
     inc map_ptr+1
 +
-    inc scroll_ptr
+    inc tree_move_ptr
     bne +
-    inc scroll_ptr+1
+    inc tree_move_ptr+1
 +
     lda map_ptr
-    cmp #<(map_base + scroll_tab_bytes)
+    cmp #<(map_base + tree_move_tab_bytes)
     bne -
     lda map_ptr+1
-    cmp #>(map_base + scroll_tab_bytes)
-    bne -
-
-    ; direct copy forward of the last 11 lines
-    ldx #0
--
-    lda map_base + scroll_row_stride * 14,x
-    sta map_base + scroll_row_stride * 13,x
-    inx
-    cpx #220
+    cmp #>(map_base + tree_move_tab_bytes)
     bne -
 
     rts
 
 tree_depth_to_strip_index
-    !byte 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 26
+    !byte 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 25, 25, 25
 
 max_height_per_column
-    !byte 18, 18, 18, 18, 18, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 18, 18, 18, 18, 18, 18, 18
+    !byte 18, 18, 18, 18, 18, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 18, 18, 18, 18, 18, 18, 18, 18
 
 FindClosestTrees
     ; go through the map for each column and find the first tree, going front to back
     ; record the depth for each tree column, from 0-24 (24 means no tree)
 
-    lda #21
+    lda #screen_cols-1
     sta tree_col
 
 ---
@@ -102,14 +139,14 @@ FindClosestTrees
     bne ++
     lda map_ptr
     clc
-    adc #22
+    adc #screen_cols
     sta map_ptr
     bcc +
     inc map_ptr+1
 +
     inc tree_row
     lda tree_row
-    cmp #24
+    cmp #map_rows
     bne -
 
 ++
@@ -124,7 +161,7 @@ FindClosestTrees
     bpl ---
 
     ; fatten the huge trees (expand to the right)
-    ldx #20 ; tree_col
+    ldx #screen_cols-2 ; tree_col
 -
     ; for a 0 or 2 in the left column, add 1 or 3 to the right column
     lda tree_strip_per_column,x
@@ -151,10 +188,9 @@ DrawTrees
 ---
     ; draw trees based on first_tree_per_column
     jsr DrawTreeStrip
-    jsr WaitForKeypress
     inc tree_col
     lda tree_col
-    cmp #22
+    cmp #screen_cols
     bne ---
 
     rts
@@ -173,9 +209,9 @@ DrawTreeStrip
     lda tree_strip_y,x
 
     ldy tree_col
-    cmp max_height_per_column,Y
+    cmp max_height_per_column,y  ; min(tree_strip_y, max_height_per_column)
     bcc +
-    sbc #2
+    lda max_height_per_column,y
 +
 
     tax
@@ -186,7 +222,7 @@ DrawTreeStrip
     sta (scr_ptr),y
     lda scr_ptr
     clc
-    adc #22
+    adc #screen_cols
     sta scr_ptr
     bcc +
     inc scr_ptr+1
@@ -205,7 +241,7 @@ tree_skip_first_clear
     ; resolve tree_strip_ptr[depth] / tree_strip_fg_ptr[depth] -> chr/fg data
     ldx tree_col
     lda tree_strip_per_column,x
-    cmp #26
+    cmp #25
     bcc +
     rts
 +
@@ -226,7 +262,7 @@ tree_skip_first_clear
     ldy tree_col
     cmp max_height_per_column,y ; avoid drawing over the handlebars, this only needs to work for the huge trees
     bcc +
-    sbc #2 ; carry set already
+    lda max_height_per_column,y
 +
     sta tree_tmp
 
@@ -245,7 +281,7 @@ tree_skip_first_clear
 
     lda scr_ptr
     clc
-    adc #22
+    adc #screen_cols
     sta scr_ptr
     sta col_ptr
     bcc +
@@ -276,7 +312,7 @@ tree_skip_first_clear
     sta (scr_ptr),y
     lda scr_ptr
     clc
-    adc #22
+    adc #screen_cols
     sta scr_ptr
     bcc +
     inc scr_ptr+1
@@ -289,24 +325,10 @@ tree_skip_first_clear
 
 
 tree_row        !byte 0
-tree_shunt_n    !byte 0
-tree_rows_left  !byte 0
-tree_cell       !byte 0
-tree_trees_left !byte 0
-tree_srow       !byte 0
-tree_depth      !byte 0
-tree_slice      !byte 0
-tree_sr_anchor  !byte 0
 tree_col        !byte 0
-tree_plot_chr   !byte 0
-tree_off        !byte 0
-tree_mark_save  !byte 0
-tree_mi_row     !byte 0
-tree_mi_col     !byte 0
-tree_plant_try  !byte 0
 tree_tmp        !byte 0
 
 first_tree_per_column
-    !fill 22, 0
+    !fill screen_cols
 tree_strip_per_column
-    !fill 22, 0
+    !fill screen_cols

@@ -64,7 +64,7 @@ STRIP_LENGTHS = (
 )
 
 PLAYFIELD_ROWS = 22
-SCREEN_COLS = 22
+SCREEN_COLS = 23
 LOGIC_ROWS = 24
 
 # Spectrum paper colours in attr bits 5..3
@@ -493,6 +493,49 @@ def emit_bike_body_chr_asm(row1: list[int], row2: list[int]) -> list[str]:
     ]
 
 
+def emit_ui_frame_asm(
+    row1: list[int], row2: list[int], solid_chr: int, blank_chr: int = 0
+) -> list[str]:
+    """Emit SCREEN_COLS x 4 UI frame around the 9x2 bike body."""
+
+    b = solid_chr
+    z = blank_chr
+    w = SCREEN_COLS
+    side = (w - len(row1)) // 2
+
+    chr_rows = [
+        [b] * side + row1 + [b] * side,
+        [b, z, z, z, z, z, b] + row2 + [b, z, z, z, z, z, b],
+        [b] + [z] * (w - 2) + [b],
+        [b] * w,
+    ]
+
+    body_cols = ["BLACK", "BLACK", "BLACK", "BLUE", "BLUE", "BLUE", "BLACK", "BLACK", "BLACK"]
+    col_rows = [
+        ["PURPLE"] * side + body_cols + ["PURPLE"] * side,
+        ["PURPLE", "BLACK", "BLACK", "BLACK", "BLACK", "BLACK", "PURPLE"]
+        + body_cols
+        + ["PURPLE", "BLACK", "BLACK", "BLACK", "BLACK", "BLACK", "PURPLE"],
+        ["PURPLE"] + ["BLACK"] * (w - 2) + ["PURPLE"],
+        ["PURPLE"] * w,
+    ]
+
+    fmt_chr = lambda row: ", ".join(str(c) for c in row)
+    fmt_col = lambda row: ", ".join(row)
+    return [
+        f"; UI frame + bike body draw table — {w} columns x 4 rows",
+        "; B = solid block, 0 = blank, bike body embedded in rows 1-2.",
+        f"ui_frame_width = {w}",
+        "ui_frame_height = 4",
+        "ui_frame_chr",
+        *(f"    !byte {fmt_chr(row)}" for row in chr_rows),
+        "",
+        "ui_frame_col",
+        *(f"    !byte {fmt_col(row)}" for row in col_rows),
+        "",
+    ]
+
+
 def add_handlebar_sections(
     pool: Pool, sections: list[tuple[str, list[bytes]]]
 ) -> dict[str, dict[str, int]]:
@@ -630,7 +673,7 @@ def main() -> int:
                 f"; depth {depth} — Spectrum ${ref.addr:04X}, empty"
             )
             lens.append(0)
-            ys.append(0)
+            ys.append(EMPTY_ROW_Y)
             rom_ptrs.append(ref.addr)
             strip_meta.append(
                 {
@@ -644,8 +687,8 @@ def main() -> int:
                     "wide": False,
                     "len": 0,
                     "chr_count": 0,
-                    "screen_row": 0,
-                    "y": 0,
+                    "screen_row": EMPTY_ROW_Y,
+                    "y": EMPTY_ROW_Y,
                 }
             )
             continue
@@ -813,7 +856,7 @@ def main() -> int:
     }
     ui_end = len(pool.rows)
 
-    bike_body_chr_lines: list[str] = []
+    ui_frame_lines: list[str] = []
     if HANDLEBAR_SOURCE.is_file():
         hb_sections = parse_handlebar_source(HANDLEBAR_SOURCE)
         meta["handlebars"] = add_handlebar_sections(pool, hb_sections)
@@ -830,8 +873,9 @@ def main() -> int:
             "fits_in_256": fwd_end < PLAYFIELD_CHR_LIMIT and body_end < PLAYFIELD_CHR_LIMIT,
         }
         row1, row2 = bike_body_chr_rows(pool, hb_sections)
-        meta["bike_body_chr"] = {"row1": row1, "row2": row2}
-        bike_body_chr_lines = emit_bike_body_chr_asm(row1, row2)
+        solid_chr = pool.index[bytes([0xFF] * 8)]
+        meta["ui_frame_chr"] = {"row1": row1, "row2": row2, "solid_chr": solid_chr}
+        ui_frame_lines = emit_ui_frame_asm(row1, row2, solid_chr)
     else:
         meta["handlebars"] = {}
 
@@ -860,7 +904,7 @@ def main() -> int:
         lines.append(f"    !byte {hexes}    ; chr {i} — {pool.labels[i]}")
     lines.append("gfx_pool_end = *")
     lines.append("")
-    lines.extend(bike_body_chr_lines)
+    lines.extend(ui_frame_lines)
     OUT_ASM.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     ui = meta["sprites"]["ui"]

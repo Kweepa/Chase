@@ -24,7 +24,7 @@ low_bank_end = *
 *= udg_base
 !source "build/gfx_pool.asm"
 !source "build/tree_strips.asm"
-!source "scroll.asm"
+!source "tree_movement_tables.asm"
 
 prg_end = *
 

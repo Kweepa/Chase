@@ -5,38 +5,19 @@ BootGame
     jsr InitTrees
     jsr InitGame
 
-    jsr DrawBikeBody
+    jsr DrawUIFrame
     jsr DrawBikeHandlebars
 
     ; fall through to main_loop for now
 
 main_loop
     jsr ReadInput
-    jsr ScrollTrees
-
-    lda #214
-    sta screen_base
-    lda #0
-    sta color_base
-
-    jsr WaitForKeypress
-
+    jsr ClearDistantTrees
+    jsr PlantTrees
+    jsr MoveTrees
     jsr FindClosestTrees
     jsr DrawTrees
-
-    lda #216
-    sta screen_base
-    lda #0
-    sta color_base
-
-    jsr WaitForKeypress
-
-    jsr DrawBikeHandlebars
-    jsr DrawHudStub
+    jsr DrawUIStub
     jsr UpdateEngineSound
-
     inc frame_tick
-
-    jsr WaitForRaster
-
     jmp main_loop

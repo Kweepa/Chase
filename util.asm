@@ -1,27 +1,5 @@
 !zone util
 
-ConvertTileXYToScreenAddr
-    tya
-    asl
-    tay
-    lda x22rowtab,y
-    sta scr_ptr
-    lda x22rowtab + 1,y
-    sta scr_ptr + 1
-    txa
-    clc
-    adc scr_ptr
-    sta scr_ptr
-    bcc +
-    inc scr_ptr + 1
-+
-    lda scr_ptr
-    sta col_ptr
-    lda scr_ptr + 1
-    eor #>(color_base ^ screen_base)
-    sta col_ptr + 1
-    rts
-
 ClearScreen
     ldx #0
 -
@@ -59,30 +37,41 @@ WaitForKeypress
     beq -
     rts
 
-x22rowtab
-    !word screen_base + screen_cols * 0
-    !word screen_base + screen_cols * 1
-    !word screen_base + screen_cols * 2
-    !word screen_base + screen_cols * 3
-    !word screen_base + screen_cols * 4
-    !word screen_base + screen_cols * 5
-    !word screen_base + screen_cols * 6
-    !word screen_base + screen_cols * 7
-    !word screen_base + screen_cols * 8
-    !word screen_base + screen_cols * 9
-    !word screen_base + screen_cols * 10
-    !word screen_base + screen_cols * 11
-    !word screen_base + screen_cols * 12
-    !word screen_base + screen_cols * 13
-    !word screen_base + screen_cols * 14
-    !word screen_base + screen_cols * 15
-    !word screen_base + screen_cols * 16
-    !word screen_base + screen_cols * 17
-    !word screen_base + screen_cols * 18
-    !word screen_base + screen_cols * 19
-    !word screen_base + screen_cols * 20
-    !word screen_base + screen_cols * 21
-    !word screen_base + screen_cols * 22
+    ; from Stephen Judd's the Fridge rand1.s, corrected with a clc
+    ; basically new = 5 * old + $3611
+GetRandom16
+    lda random+1     
+    sta temp1        
+    lda random       
+    asl              
+    rol temp1        
+    asl              
+    rol temp1        
+    clc              
+    adc random       
+    pha              
+    lda temp1        
+    adc random+1     
+    sta random+1     
+    pla              
+    clc             ; added this instruction - kweepa
+    adc #$11         
+    sta random       
+    lda random+1     
+    adc #$36         
+    sta random+1     
+    rts 
 
-hud_lives_scr = screen_base + tile_bytes - screen_cols + 10
-hud_lives_col = color_base + tile_bytes - screen_cols + 10
+    ; from my post in More Random Questions on the denial forum
+    ; basically new = 9 * old + 193
+GetRandom8
+    lda random8
+    asl
+    asl
+    asl
+    clc
+    adc random8
+    clc
+    adc #193
+    sta random8
+    rts

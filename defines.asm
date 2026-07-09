@@ -9,27 +9,19 @@ GREEN  = 5
 BLUE   = 6
 YELLOW = 7
 
-screen_base = $1000
-color_base  = $9400
-; Logic grid — full-byte RAM at top of block below $6000 ($5df0..$5fff)
-map_base    = $5df0
-
-screen_cols = 22
-screen_rows = 23
+screen_cols = 23
+screen_rows = 22
 tile_bytes  = screen_cols * screen_rows   ; 506
+screen_base = $1000
 
-; Tree grid (Spectrum $7CA1 analogue — 24 rows × 22 cols)
-; we can use the same multiplication table?
-logic_cols  = 22
-logic_rows  = 24
-row_stride  = logic_cols
-map_bytes   = logic_cols * logic_rows
+; Tree grid (24 rows × 23 cols) - top of block below $6000
+map_cols = 23
+map_rows = 24
+map_bytes   = map_cols * map_rows
+map_base    = $6000 - map_bytes
 
 udg_base    = $1800
-udg_slots   = 256
-
-; Game state (Spectrum $5DC0+ analogue)
-status_base = $0340
+color_base  = $9400
 
 SPEED_SLOW  = 2
 SPEED_FAST  = 0
@@ -37,8 +29,7 @@ SPEED_FAST  = 0
 RASTERLINE_PAL  = $70
 RASTERLINE_NTSC = $62
 
-; Raster split — horizon at playfield row 10 (sync with convert_gfx.py)
-SCREEN_BG_ROW       = 10
+; Raster split
 LIGHT_BLUE          = 14
 BG_TOP              = (LIGHT_BLUE << 4) | 8
 BG_BOTTOM           = (GREEN << 4) | 8
@@ -52,8 +43,12 @@ BG_BOTTOM           = (GREEN << 4) | 8
 ; ROW10_DELAY_PAL — VIA2 Timer B one-shot: CPU cycles from top IRQ (light blue)
 ;   to green split at playfield row 10 horizon. Tune on hardware.
 RASTER_SYNC_DOUBLE  = 27
-FRAME_TIMER_PAL     = 312 * 71 - 2
-ROW10_DELAY_PAL     = 5575
+SCANLINE_CYCLES     = 71
+FRAME_TIMER_PAL     = 312 * SCANLINE_CYCLES - 2
+ROW10_DELAY_PAL     = 83 * SCANLINE_CYCLES + 50
+
+hud_lives_scr = screen_base + 20 * screen_cols + 4
+hud_lives_col = color_base + 20 * screen_cols + 4
 
 ; Gfx equates (sync with build/gfx_equates.asm from convert_gfx.py)
 !source "build/gfx_equates.asm"

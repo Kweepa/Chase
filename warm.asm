@@ -14,7 +14,7 @@ WarmStart
     jsr $fdf9                   ; IOINIT — VIC screen defaults ($1000, 22×23)
     sei
 
-    ldy #6
+    ldy #10
 -
     ldx .vic_offset,y
     lda .vic_val,y
@@ -28,6 +28,6 @@ WarmStart
 
 ; charset $1800 ($9005=$CE); silence voices; set border to light blue
 .vic_offset
-    !byte 5, $a, $b, $c, $d, $e, $f
+    !byte 0, 1, 2, 3, 5, $a, $b, $c, $d, $e, $f
 .vic_val
-    !byte $ce, 0, 0, 0, 0, 10, (14<<4)|8
+    !byte 11, 40, 23, 44, $ce, 0, 0, 0, 0, 10, (14<<4)|8

@@ -459,8 +459,8 @@
       "wide": false,
       "len": 0,
       "chr_count": 0,
-      "screen_row": 0,
-      "y": 0
+      "screen_row": 18,
+      "y": 18
     }
   ],
   "tree_strip_count": 26,
@@ -515,7 +515,7 @@
     "handlebar_fwd_count": 14,
     "fits_in_256": true
   },
-  "bike_body_chr": {
+  "ui_frame_chr": {
     "row1": [
       223,
       11,
@@ -537,7 +537,8 @@
       233,
       11,
       234
-    ]
+    ],
+    "solid_chr": 11
   },
   "total_chr": 277,
   "spare": -21

@@ -205,8 +205,8 @@ gfx_pool
     !byte $80, $c0, $f8, $fe, $ff, $fe, $0f, $3a    ; chr 196 — helicopter 1
     !byte $1f, $07, $7f, $e0, $7f, $1c, $80, $ff    ; chr 197 — tank
     !byte $80, $00, $ff, $07, $fc, $70, $cd, $3a    ; chr 198 — tank 1
-    !byte $05, $04, $04, $60, $04, $04, $80, $a0    ; chr 199 — tank obscured
-    !byte $00, $00, $04, $00, $04, $20, $84, $20    ; chr 200 — tank obscured 1
+    !byte $13, $03, $13, $00, $03, $00, $00, $03    ; chr 199 — tank obscured
+    !byte $00, $00, $13, $03, $00, $00, $01, $02    ; chr 200 — tank obscured 1
     !byte $c3, $c3, $c3, $c3, $e7, $7e, $3c, $7e    ; chr 201 — bolt
     !byte $0e, $1d, $3a, $75, $ea, $f5, $ea, $d5    ; chr 202 — explosion
     !byte $ea, $d5, $ea, $75, $3a, $35, $1a, $1d    ; chr 203 — explosion 1
@@ -285,11 +285,19 @@ gfx_pool
     !byte $f0, $f8, $fc, $ff, $ff, $ff, $ff, $ff    ; chr 276 — handlebar_right_2 6
 gfx_pool_end = *
 
-; Bike body draw table — 9 columns × 2 rows (screen order, left→right)
-; Logical cols 0–8; chr indices after pool dedup (not sequential).
-bike_body_width = 9
-bike_body_height = 2
-bike_body_chr
-    !byte 223, 11, 224, 225, 11, 226, 227, 11, 228    ; row 1 (top)
-    !byte 229, 11, 230, 231, 11, 232, 233, 11, 234    ; row 2 (bottom)
+; UI frame + bike body draw table — 23 columns x 4 rows
+; B = solid block, 0 = blank, bike body embedded in rows 1-2.
+ui_frame_width = 23
+ui_frame_height = 4
+ui_frame_chr
+    !byte 11, 11, 11, 11, 11, 11, 11, 223, 11, 224, 225, 11, 226, 227, 11, 228, 11, 11, 11, 11, 11, 11, 11
+    !byte 11, 0, 0, 0, 0, 0, 11, 229, 11, 230, 231, 11, 232, 233, 11, 234, 11, 0, 0, 0, 0, 0, 11
+    !byte 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11
+    !byte 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
+
+ui_frame_col
+    !byte PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, BLACK, BLACK, BLACK, BLUE, BLUE, BLUE, BLACK, BLACK, BLACK, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE
+    !byte PURPLE, BLACK, BLACK, BLACK, BLACK, BLACK, PURPLE, BLACK, BLACK, BLACK, BLUE, BLUE, BLUE, BLACK, BLACK, BLACK, PURPLE, BLACK, BLACK, BLACK, BLACK, BLACK, PURPLE
+    !byte PURPLE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, PURPLE
+    !byte PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE, PURPLE
 
