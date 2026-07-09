@@ -457,16 +457,13 @@ def handlebar_section_slug(name: str) -> str:
     return f"handlebar_{pose}_{row}"
 
 
-HANDLEBAR_POOL_ORDER = (
+BIKE_BODY_POOL_ORDER = (
     "bike_body_1",
     "bike_body_2",
-    "handlebar_fwd_1",
-    "handlebar_fwd_2",
-    "handlebar_left_1",
-    "handlebar_left_2",
-    "handlebar_right_1",
-    "handlebar_right_2",
 )
+
+# Runtime-copied from playerbike.asm; pool holds blank placeholders only.
+HANDLEBAR_FWD_CHR_SLOTS = 14
 
 
 def bike_body_chr_rows(
@@ -536,7 +533,7 @@ def emit_ui_frame_asm(
     ]
 
 
-def add_handlebar_sections(
+def add_bike_body_sections(
     pool: Pool, sections: list[tuple[str, list[bytes]]]
 ) -> dict[str, dict[str, int]]:
     by_slug: dict[str, tuple[str, list[bytes]]] = {}
@@ -544,7 +541,7 @@ def add_handlebar_sections(
         by_slug[handlebar_section_slug(name)] = (name, udgs)
 
     meta: dict[str, dict[str, int]] = {}
-    for slug in HANDLEBAR_POOL_ORDER:
+    for slug in BIKE_BODY_POOL_ORDER:
         if slug not in by_slug:
             continue
         name, udgs = by_slug[slug]
@@ -572,6 +569,15 @@ class Pool:
         self.labels.append(label or "gfx")
         self.index[row] = idx
         return idx
+
+    def reserve(self, count: int, prefix: str) -> int:
+        """Reserve chr slots (blank); not deduped — for runtime UDG copy targets."""
+        start = len(self.rows)
+        blank = bytes(8)
+        for i in range(count):
+            self.rows.append(blank)
+            self.labels.append(f"{prefix} {i} (reserved)")
+        return start
 
 
 def emit_tree_strips_asm(
@@ -859,17 +865,19 @@ def main() -> int:
     ui_frame_lines: list[str] = []
     if HANDLEBAR_SOURCE.is_file():
         hb_sections = parse_handlebar_source(HANDLEBAR_SOURCE)
-        meta["handlebars"] = add_handlebar_sections(pool, hb_sections)
+        meta["handlebars"] = add_bike_body_sections(pool, hb_sections)
         hb = meta["handlebars"]
         body_count = hb["bike_body_1"]["count"] + hb["bike_body_2"]["count"]
-        fwd_count = hb["handlebar_fwd_1"]["count"] + hb["handlebar_fwd_2"]["count"]
-        fwd_end = hb["handlebar_fwd_2"]["start"] + hb["handlebar_fwd_2"]["count"] - 1
         body_end = hb["bike_body_2"]["start"] + hb["bike_body_2"]["count"] - 1
+        handlebar_fwd_start = pool.reserve(
+            HANDLEBAR_FWD_CHR_SLOTS, "handlebar_fwd"
+        )
+        fwd_end = handlebar_fwd_start + HANDLEBAR_FWD_CHR_SLOTS - 1
         meta["handlebar_playfield"] = {
             "bike_body_start": hb["bike_body_1"]["start"],
             "bike_body_count": body_count,
-            "handlebar_fwd_start": hb["handlebar_fwd_1"]["start"],
-            "handlebar_fwd_count": fwd_count,
+            "handlebar_fwd_start": handlebar_fwd_start,
+            "handlebar_fwd_count": HANDLEBAR_FWD_CHR_SLOTS,
             "fits_in_256": fwd_end < PLAYFIELD_CHR_LIMIT and body_end < PLAYFIELD_CHR_LIMIT,
         }
         row1, row2 = bike_body_chr_rows(pool, hb_sections)
@@ -920,12 +928,9 @@ def main() -> int:
     ]
     if meta.get("handlebars"):
         hb = meta["handlebars"]
+        hp = meta["handlebar_playfield"]
         equates.append(f"chr_bike_body = {hb['bike_body_1']['start']}")
-        equates.append(
-            f"chr_handlebar_fwd = {hb['handlebar_fwd_1']['start']}"
-        )
-        equates.append(f"chr_handlebar_left = {hb['handlebar_left_1']['start']}")
-        equates.append(f"chr_handlebar_right = {hb['handlebar_right_1']['start']}")
+        equates.append(f"chr_handlebar_fwd = {hp['handlebar_fwd_start']}")
     equates.append("")
     OUT_EQUATES.write_text("\n".join(equates) + "\n", encoding="utf-8")
 

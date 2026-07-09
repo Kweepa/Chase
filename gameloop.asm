@@ -12,6 +12,7 @@ BootGame
 
 main_loop
     jsr ReadInput
+    jsr TurnBikeHandlebars
     jsr ClearDistantTrees
     jsr PlantTrees
     jsr MoveTrees

@@ -13,7 +13,6 @@
 !source "trees.asm"
 !source "gameloop.asm"
 !source "sound.asm"
-!source "playerbike.asm"
 
 low_bank_end = *
 !if low_bank_end > udg_base {
@@ -25,6 +24,7 @@ low_bank_end = *
 !source "build/gfx_pool.asm"
 !source "build/tree_strips.asm"
 !source "tree_movement_tables.asm"
+!source "playerbike.asm"
 
 prg_end = *
 

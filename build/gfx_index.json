@@ -476,36 +476,6 @@
       "start": 229,
       "count": 9,
       "label": "bike body UDG row 2 - 9 UDGs"
-    },
-    "handlebar_fwd_1": {
-      "start": 235,
-      "count": 7,
-      "label": "handlebar forward UDG row 1 - 7 UDGs"
-    },
-    "handlebar_fwd_2": {
-      "start": 242,
-      "count": 7,
-      "label": "handlebar forward UDG row 2 - 7 UDGs"
-    },
-    "handlebar_left_1": {
-      "start": 249,
-      "count": 7,
-      "label": "handlebar left UDG row 1 - 7 UDGs"
-    },
-    "handlebar_left_2": {
-      "start": 256,
-      "count": 7,
-      "label": "handlebar left UDG row 2 - 7 UDGs"
-    },
-    "handlebar_right_1": {
-      "start": 263,
-      "count": 7,
-      "label": "handlebar right UDG row 1 - 7 UDGs"
-    },
-    "handlebar_right_2": {
-      "start": 270,
-      "count": 7,
-      "label": "handlebar right UDG row 2 - 7 UDGs"
     }
   },
   "handlebar_playfield": {
@@ -540,6 +510,6 @@
     ],
     "solid_chr": 11
   },
-  "total_chr": 277,
-  "spare": -21
+  "total_chr": 249,
+  "spare": 7
 }

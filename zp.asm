@@ -14,6 +14,7 @@ stickfire     = $3a
 
 scr_ptr       = $05
 col_ptr       = $07
+temp_ptr      = $09
 map_ptr       = $15
 tree_move_ptr = $1b
 tree_ptr      = $1d
