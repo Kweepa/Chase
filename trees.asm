@@ -60,8 +60,18 @@ MoveTrees
 
     ; uses tables to move forward and perspective shunt at the same time
 
-    ; choose forward, left or right as steering dictates
 
+    ; if slow, only move every other frame
+    lda speed
+    cmp #2
+    beq +
+    lda frame_tick
+    and #1
+    beq +
+    rts
+
+    ; choose forward, left or right as steering dictates
++
     ; every other frame, merge in turning
     lda frame_tick
     and #1
@@ -188,6 +198,7 @@ DrawTrees
 ---
     ; draw trees based on first_tree_per_column
     jsr DrawTreeStrip
+    jsr DrawEnemyBikes
     inc tree_col
     lda tree_col
     cmp #screen_cols

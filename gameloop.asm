@@ -17,6 +17,7 @@ main_loop
     jsr PlantTrees
     jsr MoveTrees
     jsr FindClosestTrees
+    jsr UpdateEnemyBikes
     jsr DrawTrees
     jsr DrawUIStub
     jsr UpdateEngineSound

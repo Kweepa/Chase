@@ -11,7 +11,3 @@ basic_start = $1200
     !byte 0
 basic_end
     !word 0
-
-cold_start
-warm_start
-    jmp WarmStart

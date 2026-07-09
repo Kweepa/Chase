@@ -7,15 +7,15 @@ InitGame
     lda #4
     sta sector
 
-    lda #SPEED_SLOW
-    sta speed
-
     lda #1
-    sta bike_moving
+    sta speed
 
     lda #0
     sta steer
     sta frame_tick
+
+    jsr InitBikes
+
     rts
 
 DrawUIStub

@@ -23,7 +23,7 @@ ROM_TREE_GFX_END = 0x7CA1
 
 CHR_HELICOPTER = 2
 CHR_TANK = 4
-CHR_ENEMY = 24
+CHR_ENEMY = 18
 CHR_BOLT = 1
 CHR_EXPLOSION = 9
 
@@ -105,10 +105,6 @@ def rom_strip_table(code: bytes) -> list[StripRef]:
 
 def rom_strip_ptrs(code: bytes) -> list[int]:
     return [e.addr for e in rom_strip_table(code)[:TREE_STRIP_COUNT]]
-
-
-# Placeholder chr for an empty half of a double-wide strip (must not be chr 0)
-TREE_EMPTY_HALF_UDG = bytes([0, 0, 0, 0, 0, 0, 0, 1])
 
 
 def strip_data_start(table_addr: int) -> int:
@@ -225,7 +221,7 @@ def strip_udg_to_chr(
     """Tree strip chr indices must never be chr_blank (0)."""
     if used is not None:
         used.add(udg)
-    idx = pool.add(udg, label)
+    idx = pool.add(udg, label, dedupe=True)
     if idx == 0:
         raise ValueError(f"tree strip UDG deduped to chr 0: {udg.hex()}")
     return idx
@@ -244,12 +240,11 @@ def build_strip_column_side(
     entries: list[StripRow],
     *,
     column: int,
-    empty_half_chr: int,
     used_udgs: set[bytes],
     strip_depth: int,
     side: str,
 ) -> tuple[list[int], list[int], int]:
-    """One column of a huge strip — one chr per row (empty half uses placeholder)."""
+    """One column of a huge strip — one chr per row."""
     chrs: list[int] = []
     fgs: list[int] = []
     tag = f"tree strip {strip_depth} {side}"
@@ -257,7 +252,7 @@ def build_strip_column_side(
     for row in entries:
         attr, udg = row[column]
         if is_empty_udg(udg):
-            chrs.append(empty_half_chr)
+            chrs.append(0)
         else:
             chrs.append(strip_udg_to_chr(pool, udg, used_udgs, label=tag))
         fgs.append(spectrum_fg(attr))
@@ -290,6 +285,45 @@ def build_strip_column(
 def aligned_rows(code: bytes, start: int, end: int) -> list[bytes]:
     chunk = code[va(start) : va(end)]
     return [bytes(chunk[i : i + 8]) for i in range(0, len(chunk) - 7, 8)]
+
+
+ROM_ENEMY_DISTANT = 0x7182
+ROM_ENEMY_DISTANT_END = 0x719A  # 7182–7199, 3 rows
+ROM_ENEMY_SMALL = 0x719A
+ROM_ENEMY_SMALL_END = 0x71B2  # 719A–71B1, 3 rows
+ROM_ENEMY_MEDIUM = 0x71B2
+ROM_ENEMY_MEDIUM_END = 0x71E2  # 71B2–71E1, 6 rows
+ROM_ENEMY_LARGE = 0x71E2
+ROM_ENEMY_LARGE_END = 0x7212  # 71E2–7211, 6 rows
+
+
+def enemy_bike_udgs(code: bytes) -> list[tuple[bytes, str]]:
+    """18 enemy bike UDGs matching Spectrum table layout (routine 6150)."""
+    distant = aligned_rows(code, ROM_ENEMY_DISTANT, ROM_ENEMY_DISTANT_END)
+    small = aligned_rows(code, ROM_ENEMY_SMALL, ROM_ENEMY_SMALL_END)
+    medium = aligned_rows(code, ROM_ENEMY_MEDIUM, ROM_ENEMY_MEDIUM_END)
+    large = aligned_rows(code, ROM_ENEMY_LARGE, ROM_ENEMY_LARGE_END)
+    if len(distant) != 3:
+        raise ValueError(f"expected 3 distant enemy rows, got {len(distant)}")
+    if len(small) != 3:
+        raise ValueError(f"expected 3 small enemy rows, got {len(small)}")
+    if len(medium) != 6:
+        raise ValueError(f"expected 6 medium enemy rows, got {len(medium)}")
+    if len(large) != 6:
+        raise ValueError(f"expected 6 large enemy rows, got {len(large)}")
+
+    rows: list[tuple[bytes, str]] = []
+    for i, side in enumerate("LCR"):
+        rows.append((distant[i], f"enemy distant {side}"))
+    for i, side in enumerate("LCR"):
+        rows.append((small[i], f"enemy small {side}"))
+    for di, side in enumerate("LCR"):
+        rows.append((medium[di * 2], f"enemy medium {side} top"))
+        rows.append((medium[di * 2 + 1], f"enemy medium {side} bot"))
+    for di, side in enumerate("LCR"):
+        rows.append((large[di * 2], f"enemy large {side} top"))
+        rows.append((large[di * 2 + 1], f"enemy large {side} bot"))
+    return rows
 
 
 def composite_tank_obscured(tank_row: bytes, trunk_row: bytes) -> bytes:
@@ -547,7 +581,7 @@ def add_bike_body_sections(
         name, udgs = by_slug[slug]
         start = len(pool.rows)
         for i, udg in enumerate(udgs):
-            pool.add(udg, f"{slug} {i}")
+            pool.add(udg, f"{slug} {i}", dedupe=True)
         meta[slug] = {"start": start, "count": len(udgs), "label": name}
     return meta
 
@@ -561,13 +595,14 @@ class Pool:
         self.labels: list[str] = ["blank"]
         self.index: dict[bytes, int] = {blank: 0}
 
-    def add(self, row: bytes, label: str = "") -> int:
-        if row in self.index:
+    def add(self, row: bytes, label: str = "", *, dedupe: bool = False) -> int:
+        if dedupe and row in self.index:
             return self.index[row]
         idx = len(self.rows)
         self.rows.append(row)
         self.labels.append(label or "gfx")
-        self.index[row] = idx
+        if dedupe:
+            self.index[row] = idx
         return idx
 
     def reserve(self, count: int, prefix: str) -> int:
@@ -649,7 +684,6 @@ def main() -> int:
     meta["chr_blank"] = chr_blank
 
     strip_refs = rom_strip_table(code)
-    empty_half_chr = pool.add(TREE_EMPTY_HALF_UDG, "tree empty half")
     tree_udgs: set[bytes] = set()
 
     strips: list[tuple[list[int], list[int]]] = []
@@ -716,7 +750,6 @@ def main() -> int:
                     pool,
                     rom_rows,
                     column=column,
-                    empty_half_chr=empty_half_chr,
                     used_udgs=tree_udgs,
                     strip_depth=depth,
                     side=side,
@@ -816,8 +849,20 @@ def main() -> int:
         meta["sprites"][name] = {"start": start, "count": len(rows), "reserve": reserve}
         return start
 
-    enemies = aligned_rows(code, 0x717A, 0x7204)
-    assign_group("enemies", enemies, CHR_ENEMY, "enemy bike")
+    # Spectrum small table at $7182 (8×8 rows); large at $71B4 (16 bytes per dir/stage).
+    enemy_udgs = enemy_bike_udgs(code)
+    enemy_start = pool.add(enemy_udgs[0][0], enemy_udgs[0][1])
+    for row, label in enemy_udgs[1:]:
+        pool.add(row, label)
+    meta["sprites"]["enemies"] = {
+        "start": enemy_start,
+        "count": len(enemy_udgs),
+        "reserve": CHR_ENEMY,
+        "distant": enemy_start,
+        "small": enemy_start + 3,
+        "medium": enemy_start + 6,
+        "large": enemy_start + 12,
+    }
 
     heli = aligned_rows(code, 0x631A, 0x633A)[:2]
     assign_group("helicopter", heli, CHR_HELICOPTER, "helicopter")
@@ -925,6 +970,10 @@ def main() -> int:
         f"chr_digit_0 = {ui['chr']['0']}",
         f"TREE_MARK_SMALL = ${TREE_MARK_SMALL:02x}",
         f"TREE_MARK_LARGE = ${TREE_MARK_LARGE:02x}",
+        f"chr_enemy_bike = {meta['sprites']['enemies']['start']}",
+        f"chr_enemy_small = {meta['sprites']['enemies']['small']}",
+        f"chr_enemy_medium = {meta['sprites']['enemies']['medium']}",
+        f"chr_enemy_large = {meta['sprites']['enemies']['large']}",
     ]
     if meta.get("handlebars"):
         hb = meta["handlebars"]

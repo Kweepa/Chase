@@ -3,10 +3,12 @@
 A port of the classic Spectrum 3d forest chase game for the VIC-20 with 16K RAM expansion.
 
 Working:
-- tree map advancement and tree rendering (mostly)
-- drawing the player bike
+- tree map advancement and tree rendering
+- drawing and steering the player bike
 - raster split to change the background from sky to ground colour
 - bike audio
+- player bike speeds (slow/fast)
+- enemy bike movement and rendering
 
 ## Running
 

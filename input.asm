@@ -65,6 +65,15 @@ ReadInput
 
     jsr ScanJoystick
 
+    lda #1
+    sta speed
+    ldx #$ef
+    jsr ScanKeyRow
+    beq +
+    lda #2
+    sta speed
++
+
     ldx #$bf
     jsr ScanKeyRow
     ora stickleft

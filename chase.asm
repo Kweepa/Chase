@@ -1,5 +1,5 @@
-; Chase VIC-20 — 16K cassette port (first pass)
-; PRG @ $1201; screen $1000; map $5DF0; charset $1800
+; Forest Chase VIC-20 — 16K port
+; PRG @ $1201; screen $1000; charset $1800; map at mem top
 
 !source "zp.asm"
 !source "defines.asm"
@@ -25,6 +25,7 @@ low_bank_end = *
 !source "build/tree_strips.asm"
 !source "tree_movement_tables.asm"
 !source "playerbike.asm"
+!source "enemybikes.asm"
 
 prg_end = *
 

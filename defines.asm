@@ -23,9 +23,6 @@ map_base    = $6000 - map_bytes
 udg_base    = $1800
 color_base  = $9400
 
-SPEED_SLOW  = 2
-SPEED_FAST  = 0
-
 RASTERLINE_PAL  = $70
 RASTERLINE_NTSC = $62
 
