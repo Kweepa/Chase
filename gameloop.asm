@@ -2,7 +2,6 @@
 
 BootGame
     jsr ClearScreen
-    jsr InitTrees
     jsr InitGame
 
     jsr DrawUIFrame
@@ -26,4 +25,5 @@ main_loop
     jsr DrawUIStub
     jsr UpdateEngineSound
     inc frame_tick
+    jsr TryCrash
     jmp main_loop

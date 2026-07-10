@@ -101,3 +101,70 @@ TurnBikeHandlebars
     bpl -
 
     rts
+
+TryCrash
+    lda #9
+    clc
+    adc steer
+    tax
+    ldy #5
+-
+    lda map_base,x
+    bne +
+    inx
+    dey
+    bpl -
+    rts
+
++
+    ; crashed
+    ; draw a fat tree around x
+    dex
+    dex
+    dex
+    stx fat_tree_x
+    lda #0
+    sta fat_tree_count
+-
+    ldx fat_tree_count
+    lda fat_tree_strips,x
+    ldx fat_tree_x
+    stx tree_col
+    sta tree_strip_per_column,x
+    jsr DrawTreeStrip
+
+    inc fat_tree_x
+    inc fat_tree_count
+    lda fat_tree_count
+    cmp #8
+    bne -
+
+    ; flash the border red/black
+    lda #8|RED
+    sta crash_border
+    ldx #25
+-
+    lda crash_border
+    eor #(RED^BLACK)
+    sta crash_border
+    sta $900f
+    jsr WaitForRaster
+    dex
+    bne -
+
+    dec lives
+
+    jsr InitGame
+    rts
+
+
+fat_tree_x
+    !byte 0
+fat_tree_count
+    !byte 0
+fat_tree_strips
+    !byte 0,0,1,1,0,1,1,1
+crash_border
+    !byte 0
+
+

@@ -23,7 +23,7 @@ map_base    = $6000 - map_bytes
 udg_base    = $1800
 color_base  = $9400
 
-RASTERLINE_PAL  = $70
+RASTERLINE_PAL  = $10
 RASTERLINE_NTSC = $62
 
 ; Raster split

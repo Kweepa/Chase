@@ -11,8 +11,8 @@ InitGame
     lda #0
     sta frame_tick
 
+    jsr InitTrees
     jsr InitPlayerBike
-
     jsr InitSector
 
     rts

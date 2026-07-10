@@ -98,7 +98,9 @@ TopIrq
 
     jsr RasterSync
 
-    lda #BG_TOP
+    lda $900f
+    and #$0f
+    ora #BG_TOP
     sta $900f
 
     lda #<ROW10_DELAY_PAL
@@ -117,7 +119,9 @@ Row10Irq
 
     jsr RasterSync
 
-    lda #BG_BOTTOM
+    lda $900f
+    and #$0f
+    ora #BG_BOTTOM
     sta $900f
 
     lda #$20
