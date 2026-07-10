@@ -9,6 +9,18 @@ Working:
 - bike audio
 - player bike speeds (slow/fast)
 - enemy bike movement and rendering
+- photon bolt
+- bonus enemy
+- crashing
+
+To do:
+- helicopter movement
+- sector advance
+- night patrol
+- title page
+- game over
+- score
+- UI
 
 ## Running
 
