@@ -8,12 +8,11 @@
 ;   http://codebase64.net/doku.php?id=interrupts:making_stable_raster_routines
 ;
 ; Chase uses two IRQs per frame:
-;   VIA2 Timer A (periodic) — top of frame: restore light-blue sky ($900F)
-;   VIA2 Timer B (one-shot, re-armed each frame) — row 10: green grass ($900F)
-; VIA2 ($9120-$912F) register map on the VIC-20 (NOT the same as C64 CIA):
-;   $912D  IFR — interrupt flags (read; write 1 to clear a bit)
-;   $912E  IER — interrupt enable (write $80|mask to enable, $00|mask to disable)
-;   $912F  Port A — joystick (NEVER use for IRQ enable)
+;   VIA2 Timer A (periodic) - top of frame: restore light-blue sky ($900F)
+;   VIA2 Timer B (one-shot, re-armed each frame) - row 10: green grass ($900F)
+; VIA2 ($9120-$912F) register map on the VIC-20:
+;   $912D  IFR - interrupt flags (read; write 1 to clear a bit)
+;   $912E  IER - interrupt enable (write $80|mask to enable, $00|mask to disable)
 
 !zone raster
 
@@ -89,7 +88,8 @@ RasterDispatcher
     lda $912d
     and #$20
     bne Row10Irq
-    jmp $eabf
+
+    jmp DummyIRQ
 
 ; Top of frame: light-blue sky, then arm row-10 one-shot.
 TopIrq
@@ -108,7 +108,7 @@ TopIrq
     lda #$a0
     sta $912e                   ; enable Timer B underflow interrupt on VIA2 IER
 
-    jmp $eabf                   ; return to normal IRQ
+    jmp DummyIRQ
 
 ; Row 10 horizon: green grass background.
 Row10Irq
@@ -123,7 +123,7 @@ Row10Irq
     lda #$20
     sta $912e                   ; disable Timer B in VIA2 IER until re-armed next frame
 
-    jmp $eabf                   ; return to normal IRQ
+    jmp DummyIRQ
 
 ; Auxiliary-timer NOP-slide — removes up-to-7-cycle IRQ entry jitter.
 ; (Marko Makela / Codebase64 stable raster routine.)
@@ -147,3 +147,12 @@ RasterSync
     lsr
     bcs *+2                     ; now it has taken 82 cycles from the beginning of the IRQ
     rts
+
+
+DummyIRQ ; replacement for $eabf
+    pla
+    tay
+    pla
+    tax
+    pla
+    rti

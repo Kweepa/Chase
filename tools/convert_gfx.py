@@ -24,7 +24,7 @@ ROM_TREE_GFX_END = 0x7CA1
 CHR_HELICOPTER = 2
 CHR_TANK = 4
 CHR_ENEMY = 18
-CHR_BOLT = 1
+CHR_BOLT = 6
 CHR_EXPLOSION = 9
 
 # Fallback UI glyph order when UI.png / UI.txt are absent ($, B, 0–9)
@@ -323,6 +323,30 @@ def enemy_bike_udgs(code: bytes) -> list[tuple[bytes, str]]:
     for di, side in enumerate("LCR"):
         rows.append((large[di * 2], f"enemy large {side} top"))
         rows.append((large[di * 2 + 1], f"enemy large {side} bot"))
+    return rows
+
+
+# Ritchie333 lists bolt at $7214..$723C+7; bin may be ±2. Anchor on first-row pixels.
+ROM_BOLT_HINT = 0x7214
+BOLT_FIRST_ROW_PREFIX = bytes([0x7C, 0xFF, 0xC3, 0xC3])
+
+
+def bolt_udgs(code: bytes) -> list[bytes]:
+    """6 photon-bolt UDGs; locate by $7C,$FF,$C3,$C3 near $7214."""
+    search_lo = va(ROM_BOLT_HINT - 8)
+    search_hi = va(ROM_BOLT_HINT + 8)
+    window = code[search_lo:search_hi]
+    off = window.find(BOLT_FIRST_ROW_PREFIX)
+    if off < 0:
+        raise ValueError(
+            f"bolt UDG prefix {BOLT_FIRST_ROW_PREFIX.hex()} not found near ${ROM_BOLT_HINT:04X}"
+        )
+    start = ORG + search_lo + off
+    rows = aligned_rows(code, start, start + CHR_BOLT * 8)
+    if len(rows) != CHR_BOLT:
+        raise ValueError(f"expected {CHR_BOLT} bolt rows, got {len(rows)}")
+    if not rows[0].startswith(BOLT_FIRST_ROW_PREFIX):
+        raise ValueError(f"bolt row 0 mismatch: {rows[0].hex()}")
     return rows
 
 
@@ -879,10 +903,10 @@ def main() -> int:
         )
     meta["sprites"]["tank"] = {"start": tank_start, "count": 4}
 
-    bolt_rows = aligned_rows(code, 0x7214, 0x7246)[:1]
+    bolt_rows = bolt_udgs(code)
     assign_group("bolt", bolt_rows, CHR_BOLT, "bolt")
 
-    exp_rows = aligned_rows(code, 0x6A7A, 0x6AC2)[:CHR_EXPLOSION]
+    exp_rows = aligned_rows(code, 0x6A78, 0x6AC0)[:CHR_EXPLOSION]
     assign_group("explosion", exp_rows, CHR_EXPLOSION, "explosion")
 
     ui_order, ui_source = load_ui_glyphs()
@@ -974,6 +998,8 @@ def main() -> int:
         f"chr_enemy_small = {meta['sprites']['enemies']['small']}",
         f"chr_enemy_medium = {meta['sprites']['enemies']['medium']}",
         f"chr_enemy_large = {meta['sprites']['enemies']['large']}",
+        f"chr_bolt = {meta['sprites']['bolt']['start']}",
+        f"chr_explosion = {meta['sprites']['explosion']['start']}",
     ]
     if meta.get("handlebars"):
         hb = meta["handlebars"]

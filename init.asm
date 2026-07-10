@@ -4,7 +4,7 @@ InitGame
     lda #3
     sta lives
 
-    lda #4
+    lda #1
     sta sector
 
     lda #1
@@ -15,6 +15,8 @@ InitGame
     sta frame_tick
 
     jsr InitBikes
+    jsr InitBolt
+    jsr InitExplosion
 
     rts
 

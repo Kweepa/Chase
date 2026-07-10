@@ -9,9 +9,19 @@ lives         = $f4
 bikedir       = $d0 ; per bike
 bikex         = $d2
 bikedirtimer  = $d4
+bikedead      = $d6
 
-bikez         = $d6 ; shared
-bikeztimer    = $d7
+bikez         = $d8 ; shared
+bikeztimer    = $d9
+
+boltx         = $c0
+bolty         = $c1
+boltoff       = $c2 ; an offset from the horizon so we can quickly render without using a lookup table
+boltfired     = $c3
+
+explosiont    = $c4
+explosionx    = $c5
+explosioncol  = $c6
 
 stickleft     = $37
 stickright    = $38

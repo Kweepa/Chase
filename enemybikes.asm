@@ -8,6 +8,8 @@ InitBikes
     lda #0
     sta bikedir
     sta bikedir+1
+    sta bikedead
+    sta bikedead+1
 
     lda #-1
     sta bikex
@@ -20,11 +22,18 @@ InitBikes
 
 UpdateEnemyBikes
 
+    jsr MoveBikesInZ
+
     ; one bike moves per frame
     lda frame_tick
     and #1
     tax
 -
+    lda bikedead,x
+    beq +
+    rts
++
+
     ; change direction
     ldy bikedirtimer,x
     dey
@@ -64,15 +73,8 @@ UpdateEnemyBikes
 ++
     sta bikex,x
 
-    jsr MoveBikesInZ
     jsr PushBikesApart
 
-    ; push bikes apart
-    lda bikex
-    cmp bikex+1
-    bne +
-    inc bikex+1
-+
     rts
 
 MoveBikesInZ
@@ -105,6 +107,10 @@ get_closer
 
 PushBikesApart
     ; push bikes apart
+    lda bikedead
+    bne +
+    lda bikedead+1
+    bne +
     lda bikex
     cmp bikex+1
     bne +
@@ -144,6 +150,10 @@ DrawEnemyBikes
     ldx bike_index
     lda bikex,x
     cmp tree_col
+    bne +
+
+    ; skip if bike is dead
+    lda bikedead,x
     bne +
 
     jsr DrawEnemyBike

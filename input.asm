@@ -74,6 +74,10 @@ ReadInput
     sta speed
 +
 
+    ldx #$fb
+    jsr ScanKeyRow
+    sta boltfired
+
     ldx #$bf
     jsr ScanKeyRow
     ora stickleft

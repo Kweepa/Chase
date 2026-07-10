@@ -18,7 +18,10 @@ main_loop
     jsr MoveTrees
     jsr FindClosestTrees
     jsr UpdateEnemyBikes
+    jsr UpdateBolt
     jsr DrawTrees
+    jsr DrawExplosion
+    jsr UpdateExplosion
     jsr DrawUIStub
     jsr UpdateEngineSound
     inc frame_tick

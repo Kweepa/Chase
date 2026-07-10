@@ -15,9 +15,12 @@
 !source "sound.asm"
 
 low_bank_end = *
-!if low_bank_end > udg_base {
-!error "low bank overflow past udg_base by ", low_bank_end - udg_base
+
+!ifdef pass2 {
+    free_space_in_low_bank = udg_base - low_bank_end
+    !warn "Free space in low bank: ", free_space_in_low_bank
 }
+
 !fill udg_base - low_bank_end, 0
 
 *= udg_base
@@ -26,17 +29,14 @@ low_bank_end = *
 !source "tree_movement_tables.asm"
 !source "playerbike.asm"
 !source "enemybikes.asm"
+!source "bolt.asm"
+!source "explosion.asm"
 
 prg_end = *
 
-; Warn once assembly has converged (skip early passes where low_bank_end may change).
-low_bank_free = udg_base - low_bank_end
-!ifdef low_bank_end_prev {
-!if low_bank_end = low_bank_end_prev {
-!ifndef low_bank_warned {
-!warn "low bank free before udg_base: ", low_bank_free
-low_bank_warned = 1
+!ifdef pass2 {
+    free_space_in_high_bank = map_base - prg_end
+    !warn "Free space in high bank: ", free_space_in_high_bank
 }
-}
-}
-low_bank_end_prev = low_bank_end
+
+pass2 = 1

@@ -199,6 +199,7 @@ DrawTrees
     ; draw trees based on first_tree_per_column
     jsr DrawTreeStrip
     jsr DrawEnemyBikes
+    jsr DrawBolt
     inc tree_col
     lda tree_col
     cmp #screen_cols

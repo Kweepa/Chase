@@ -20,33 +20,33 @@
     },
     "bolt": {
       "start": 202,
-      "count": 1,
-      "reserve": 1
+      "count": 6,
+      "reserve": 6
     },
     "explosion": {
-      "start": 203,
+      "start": 208,
       "count": 9,
       "reserve": 9
     },
     "ui": {
-      "start": 212,
+      "start": 217,
       "count": 12,
       "pool_slots": 12,
       "source": "hardcoded",
       "order": "$B0123456789",
       "chr": {
-        "$": 212,
-        "B": 213,
-        "0": 214,
-        "1": 215,
-        "2": 216,
-        "3": 217,
-        "4": 218,
-        "5": 219,
-        "6": 220,
-        "7": 221,
-        "8": 222,
-        "9": 223
+        "$": 217,
+        "B": 218,
+        "0": 219,
+        "1": 220,
+        "2": 221,
+        "3": 222,
+        "4": 223,
+        "5": 224,
+        "6": 225,
+        "7": 226,
+        "8": 227,
+        "9": 228
       }
     }
   },
@@ -472,48 +472,48 @@
   "tree_chr_end": 178,
   "handlebars": {
     "bike_body_1": {
-      "start": 224,
+      "start": 229,
       "count": 9,
       "label": "bike body UDG row 1 - 9 UDGs"
     },
     "bike_body_2": {
-      "start": 230,
+      "start": 235,
       "count": 9,
       "label": "bike body UDG row 2 - 9 UDGs"
     }
   },
   "handlebar_playfield": {
-    "bike_body_start": 224,
+    "bike_body_start": 229,
     "bike_body_count": 18,
-    "handlebar_fwd_start": 236,
+    "handlebar_fwd_start": 241,
     "handlebar_fwd_count": 14,
     "fits_in_256": true
   },
   "ui_frame_chr": {
     "row1": [
-      224,
+      229,
       10,
-      225,
-      226,
+      230,
+      231,
       10,
-      227,
-      228,
+      232,
+      233,
       10,
-      229
+      234
     ],
     "row2": [
-      230,
+      235,
       10,
-      231,
-      232,
+      236,
+      237,
       10,
-      233,
-      234,
+      238,
+      239,
       10,
-      235
+      240
     ],
     "solid_chr": 10
   },
-  "total_chr": 250,
-  "spare": 6
+  "total_chr": 255,
+  "spare": 1
 }
