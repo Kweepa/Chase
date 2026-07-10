@@ -22,8 +22,10 @@ UpdateBolt
     lda #$ff
     sta bolty
 
-    ; TODO: check for tank/heli here
+    jsr TryKillBonus
+
     rts
+
 +
     lda boltx
     sec
@@ -42,6 +44,11 @@ UpdateBolt
 try_fire_bolt
     lda boltfired
     bne +
+    rts
++
+    lda speed
+    cmp #2
+    beq +
     rts
 +
     lda #11
@@ -81,10 +88,9 @@ bolt_path_clear
     rts
 
 bolt_hit_bike
-    ; determine which bike we hit
-    lda color_base + 10 * screen_cols,x
     ldx #0
-    cmp #YELLOW
+    lda bikex
+    cmp tree_col
     beq +
     inx
 +

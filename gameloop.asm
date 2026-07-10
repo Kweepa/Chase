@@ -19,6 +19,7 @@ main_loop
     jsr FindClosestTrees
     jsr UpdateEnemyBikes
     jsr UpdateBolt
+    jsr UpdateBonus
     jsr DrawTrees
     jsr DrawExplosion
     jsr UpdateExplosion

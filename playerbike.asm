@@ -1,5 +1,12 @@
 !zone playerbike
 
+InitPlayerBike
+    lda #1
+    sta speed
+    lda #0
+    sta steer
+    rts
+
 bike_bars_col
     !byte BLACK, BLACK, WHITE, WHITE, WHITE, BLACK, BLACK
 

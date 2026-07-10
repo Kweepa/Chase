@@ -200,6 +200,7 @@ DrawTrees
     jsr DrawTreeStrip
     jsr DrawEnemyBikes
     jsr DrawBolt
+    jsr DrawBonus
     inc tree_col
     lda tree_col
     cmp #screen_cols

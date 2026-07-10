@@ -1,22 +1,27 @@
 !zone init
 
 InitGame
+
     lda #3
     sta lives
 
     lda #1
     sta sector
 
-    lda #1
-    sta speed
-
     lda #0
-    sta steer
     sta frame_tick
 
+    jsr InitPlayerBike
+
+    jsr InitSector
+
+    rts
+
+InitSector
     jsr InitBikes
     jsr InitBolt
     jsr InitExplosion
+    jsr InitBonus
 
     rts
 

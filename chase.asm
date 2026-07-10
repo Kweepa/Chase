@@ -31,6 +31,7 @@ low_bank_end = *
 !source "enemybikes.asm"
 !source "bolt.asm"
 !source "explosion.asm"
+!source "bonusenemy.asm"
 
 prg_end = *
 
