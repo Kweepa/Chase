@@ -6,6 +6,7 @@ speed         = $f2
 sector        = $f3
 lives         = $f4
 score         = $f5      ; 3 bytes
+skycol        = $f6
 
 bikedir       = $d0 ; per bike
 bikex         = $d2
@@ -24,11 +25,13 @@ explosiont    = $c4
 explosionx    = $c5
 explosioncol  = $c6
 
-bonustimer    = $c8
+bonusdelay    = $c8
 bonusx        = $c9
-bonusdead     = $ca
-bonusexp      = $cb ; bonus explosion draw timer
-bonusvis      = $cc
+bonusy        = $ca
+bonusdead     = $cb
+bonusexp      = $cc ; bonus explosion draw timer
+bonusvis      = $cd
+bonustime     = $ce
 
 stickleft     = $37
 stickright    = $38
@@ -41,6 +44,7 @@ temp_ptr      = $09
 udg_src_ptr   = $0b
 udg_mix_ptr   = $0d
 udg_dst_ptr   = $0f
+bonus_ptr     = $11
 map_ptr       = $15
 tree_move_ptr = $1b
 tree_ptr      = $1d

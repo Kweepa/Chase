@@ -79,6 +79,9 @@ DoTitleScreen
     lda #$c2
     sta $9005 ; normal text screen
 
+    lda #BG_TOP
+    sta skycol
+
     lda #32
     jsr ClearScreenWithA
     lda #BLACK

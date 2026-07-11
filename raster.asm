@@ -100,7 +100,7 @@ TopIrq
 
     lda $900f
     and #$0f
-    ora #BG_TOP
+    ora skycol
     sta $900f
 
     lda #<ROW10_DELAY_PAL

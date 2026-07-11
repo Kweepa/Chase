@@ -1,17 +1,37 @@
 !zone bonusenemy
 
+SetInitialBonusY
+    ; tank y=9; heli y = rnd(8)
+    lda #9
+    sta bonusy
+    lda sector
+    and #1
+    bne +
+    jsr GetRandom16
+    and #7
+    sta bonusy
++
+    rts
+
 InitBonus
     lda #3
-    sta bonustimer
+    sta bonusdelay
     lda #$fe
     sta bonusx
     lda #0
     sta bonusdead
     sta bonusvis
+    sta bonustime
+    jsr SetInitialBonusY
     rts
 
 TryKillBonus
     lda bonusdead
+    beq +
+    rts
++
+    lda bonusy
+    cmp #9
     beq +
     rts
 +
@@ -29,6 +49,38 @@ TryKillBonus
     sta bonusexp
     rts
 
+UpdateHelicopter
+    ; for helicopter, rise and fall
+    lda sector
+    and #1
+    beq +
+    rts
++
+    ; rotate the blades
+    lda udg_base + 8 * chr_heli + 1
+    eor #$2a
+    sta udg_base + 8 * chr_heli + 1
+    lda udg_base + 8 * chr_heli + 9
+    eor #$2a
+    sta udg_base + 8 * chr_heli + 9
+
+    lda bonustime
+    cmp #6
+    bcs ++
+    ldy bonusy
+    cpy #9
+    beq +
+    iny
++   
+    sty bonusy
+    rts
+++
+    cmp #14
+    bcc +
+    dec bonusy
++
+    rts
+
 UpdateBonus
 
     lda frame_tick
@@ -37,9 +89,9 @@ UpdateBonus
     rts
 +
 
-    lda bonustimer
+    lda bonusdelay
     bmi +
-    dec bonustimer
+    dec bonusdelay
     rts
 
 +
@@ -51,7 +103,13 @@ UpdateBonus
     lda frame_tick ; go slow
     and #2
     beq +
-    inx
+    inx ; bonusx
+
+    jsr UpdateHelicopter
+    inc bonustime
+    lda bonusy
+    bmi bonus_reset
+
 +
     lda #1
     sta bonusvis
@@ -59,6 +117,8 @@ UpdateBonus
     sec
     sbc steer
     sta bonusx
+
+
     cmp #screen_cols
     beq bonus_reset
     cmp #screen_cols+1
@@ -80,13 +140,39 @@ UpdateBonus
 
 bonus_reset
     lda #20
-    sta bonustimer
+    sta bonusdelay
     lda #$fe
     sta bonusx
     lda #0
     sta bonusvis
+    sta bonustime
+    jsr SetInitialBonusY
 
     rts
+
+screen_rows_low
+    !byte <screen_base
+    !byte <screen_base + screen_cols
+    !byte <screen_base + screen_cols * 2
+    !byte <screen_base + screen_cols * 3
+    !byte <screen_base + screen_cols * 4
+    !byte <screen_base + screen_cols * 5
+    !byte <screen_base + screen_cols * 6
+    !byte <screen_base + screen_cols * 7
+    !byte <screen_base + screen_cols * 8
+    !byte <screen_base + screen_cols * 9
+
+screen_rows_hi
+    !byte >screen_base
+    !byte >screen_base + screen_cols
+    !byte >screen_base + screen_cols * 2
+    !byte >screen_base + screen_cols * 3
+    !byte >screen_base + screen_cols * 4
+    !byte >screen_base + screen_cols * 5
+    !byte >screen_base + screen_cols * 6
+    !byte >screen_base + screen_cols * 7
+    !byte >screen_base + screen_cols * 8
+    !byte >screen_base + screen_cols * 9
 
 DrawBonus
     lda bonusvis
@@ -109,21 +195,36 @@ DrawBonus
     asl
     asl
     asl
+    sta temp2
     tay
 
+    ldx bonusy
+    lda screen_rows_low,x
+    clc
+    adc tree_col
+    sta scr_ptr
+    sta col_ptr
+    lda screen_rows_hi,x
+    adc #0
+    sta scr_ptr+1
+    eor #$84
+    sta col_ptr+1
+
     ; write white if not obscured
-    ldx tree_col
-    lda screen_base + 9 * screen_cols,x
+    ldy #0
+    lda (scr_ptr),y
     bne +
     lda #WHITE
-    sta color_base + 9 * screen_cols,x
+    sta (col_ptr),y
 +
+    ldy temp2
     jsr GetBonusUDGAddr
     
     ; get UDG to mix in (get screen UDG, * 8, + udg_base)
     lda #0
     sta udg_mix_ptr+1
-    lda screen_base + 9 * screen_cols,x
+    ldy #0
+    lda (scr_ptr),y
     asl
     rol udg_mix_ptr+1
     asl
@@ -136,7 +237,7 @@ DrawBonus
     adc #>udg_base
     sta udg_mix_ptr+1
 
-    tya
+    lda temp2
     clc
     adc #<udg_base + 8 * chr_bonus
     sta udg_dst_ptr
@@ -156,7 +257,8 @@ DrawBonus
     ; finally write the udg to the screen
     ldy temp1
     lda bonus_enemy_dest_udg,y
-    sta screen_base + 9*screen_cols,x
+    ldy #0
+    sta (scr_ptr),y
     rts
 
 bonus_enemy_dest_udg

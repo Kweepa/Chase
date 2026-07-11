@@ -5,7 +5,7 @@ InitGame
     lda #3
     sta lives
 
-    lda #1
+    lda #2
     sta sector
 
     lda #0
@@ -14,6 +14,9 @@ InitGame
     jsr InitTrees
     jsr InitPlayerBike
     jsr InitSector
+
+    lda #BG_TOP
+    sta skycol
 
     rts
 
