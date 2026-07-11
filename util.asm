@@ -1,11 +1,20 @@
 !zone util
 
-ClearScreen
+ClearScreenWithA
     ldx #0
 -
-    lda #0
     sta screen_base,x
     sta screen_base + $100,x
+    inx
+    bne -
+
+    rts
+
+ClearColoursWithA
+    ldx #0
+-
+    sta color_base,x
+    sta color_base + $100,x
     inx
     bne -
 

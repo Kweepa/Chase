@@ -32,6 +32,7 @@ low_bank_end = *
 !source "bolt.asm"
 !source "explosion.asm"
 !source "bonusenemy.asm"
+!source "title.asm"
 
 prg_end = *
 

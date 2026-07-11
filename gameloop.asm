@@ -1,7 +1,10 @@
 !zone gameloop
 
 BootGame
-    jsr ClearScreen
+    lda #0
+    jsr ClearScreenWithA
+    jsr DoTitleScreen
+
     jsr InitGame
 
     jsr DrawUIFrame
