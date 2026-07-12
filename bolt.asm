@@ -103,17 +103,29 @@ bolt_path_clear
     rts
 
 bolt_hit_bike
+    ; kill the alive bike in this column (dead bike X can linger)
     ldx #0
     lda bikex
     cmp tree_col
-    beq +
-    inx
+    bne +
+    lda bikedead
+    beq mark_bike_dead
 +
+    ldx #1
+    lda bikex+1
+    cmp tree_col
+    bne +
+    lda bikedead+1
+    bne +
+mark_bike_dead
     lda #1
     sta bikedead,x
 
     jsr SpawnExplosion
     jsr Add1000ToScore
++
+    lda #$ff
+    sta bolty
     lda #0
     sta $900c
     rts
