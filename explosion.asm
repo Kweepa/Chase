@@ -10,6 +10,8 @@ SpawnExplosion
     sta explosionx
     lda #15
     sta explosiont
+    lda #140
+    sta $900d
     rts
 
 UpdateExplosion
@@ -22,6 +24,13 @@ UpdateExplosion
     lda explosion_colors,x
     sta explosioncol
     dec explosiont
+
+    lda explosiont
+    bpl +
+    ; explosion ended
+    lda #0
+    sta $900d
++
     
     lda frame_tick
     and #1

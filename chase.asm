@@ -33,6 +33,9 @@ low_bank_end = *
 !source "explosion.asm"
 !source "bonusenemy.asm"
 !source "title.asm"
+!source "ui.asm"
+!source "sectorchange.asm"
+!source "ending.asm"
 
 prg_end = *
 

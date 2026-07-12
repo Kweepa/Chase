@@ -4,9 +4,11 @@ frame_tick    = $f0
 steer         = $f1      ; -1 left, 0 centre, +1 right
 speed         = $f2
 sector        = $f3
-lives         = $f4
-score         = $f5      ; 3 bytes
+night         = $f4
+lives         = $f5
 skycol        = $f6
+score         = $f7      ; 6 bytes, one per digit
+hiscore       = $e7
 
 bikedir       = $d0 ; per bike
 bikex         = $d2
@@ -37,6 +39,12 @@ stickleft     = $37
 stickright    = $38
 stickup       = $39
 stickfire     = $3a
+
+tree_row      = $40
+tree_col      = $41
+tree_tmp      = $42
+first_tree_per_column = $43
+tree_strip_per_column = $5a
 
 scr_ptr       = $05
 col_ptr       = $07

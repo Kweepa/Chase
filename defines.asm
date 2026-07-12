@@ -42,10 +42,7 @@ BG_BOTTOM           = (GREEN << 4) | 8
 RASTER_SYNC_DOUBLE  = 27
 SCANLINE_CYCLES     = 71
 FRAME_TIMER_PAL     = 312 * SCANLINE_CYCLES - 2
-ROW10_DELAY_PAL     = 83 * SCANLINE_CYCLES + 50
-
-hud_lives_scr = screen_base + 20 * screen_cols + 4
-hud_lives_col = color_base + 20 * screen_cols + 4
+ROW10_DELAY_PAL     = 83 * SCANLINE_CYCLES + 30
 
 ; Gfx equates (sync with build/gfx_equates.asm from convert_gfx.py)
 !source "build/gfx_equates.asm"

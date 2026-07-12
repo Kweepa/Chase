@@ -335,13 +335,3 @@ tree_skip_first_clear
 
 ++
     rts
-
-
-tree_row        !byte 0
-tree_col        !byte 0
-tree_tmp        !byte 0
-
-first_tree_per_column
-    !fill screen_cols
-tree_strip_per_column
-    !fill screen_cols

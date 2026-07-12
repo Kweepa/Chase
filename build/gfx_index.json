@@ -25,35 +25,36 @@
     },
     "ui": {
       "start": 213,
-      "count": 12,
-      "pool_slots": 12,
-      "source": "hardcoded",
-      "order": "$B0123456789",
+      "count": 13,
+      "pool_slots": 13,
+      "source": "hardcoded + udg_source.txt",
+      "order": "$BR0123456789",
       "chr": {
         "$": 213,
         "B": 214,
-        "0": 215,
-        "1": 216,
-        "2": 217,
-        "3": 218,
-        "4": 219,
-        "5": 220,
-        "6": 221,
-        "7": 222,
-        "8": 223,
-        "9": 224
+        "R": 215,
+        "0": 216,
+        "1": 217,
+        "2": 218,
+        "3": 219,
+        "4": 220,
+        "5": 221,
+        "6": 222,
+        "7": 223,
+        "8": 224,
+        "9": 225
       }
     },
     "heli": {
-      "start": 251,
+      "start": 252,
       "count": 2
     },
     "tank": {
-      "start": 253,
+      "start": 254,
       "count": 2
     },
     "bonus_explode": {
-      "start": 255,
+      "start": 256,
       "count": 2
     }
   },
@@ -479,49 +480,49 @@
   "tree_chr_end": 178,
   "handlebars": {
     "bike_body_1": {
-      "start": 225,
+      "start": 226,
       "count": 9,
       "label": "bike body UDG row 1 - 9 UDGs"
     },
     "bike_body_2": {
-      "start": 231,
+      "start": 232,
       "count": 9,
       "label": "bike body UDG row 2 - 9 UDGs"
     }
   },
   "handlebar_playfield": {
-    "bike_body_start": 225,
+    "bike_body_start": 226,
     "bike_body_count": 18,
-    "handlebar_fwd_start": 237,
+    "handlebar_fwd_start": 238,
     "handlebar_fwd_count": 14,
     "fits_in_256": true
   },
   "ui_frame_chr": {
     "row1": [
-      225,
-      10,
       226,
+      10,
       227,
-      10,
       228,
-      229,
       10,
-      230
+      229,
+      230,
+      10,
+      231
     ],
     "row2": [
-      231,
-      10,
       232,
+      10,
       233,
-      10,
       234,
-      235,
       10,
-      236
+      235,
+      236,
+      10,
+      237
     ],
     "solid_chr": 10
   },
-  "playfield_chr": 251,
-  "total_chr": 257,
-  "spare": 5
+  "playfield_chr": 252,
+  "total_chr": 258,
+  "spare": 4
 }

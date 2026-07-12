@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BIN_DEFAULT = ROOT / "build" / "deathchase.bin"
 UI_PNG = ROOT / "UI.png"
 UI_TXT = ROOT / "UI.txt"
+UDG_SOURCE = ROOT / "udg_source.txt"
 HANDLEBAR_SOURCE = ROOT / "handlebar_source.txt"
 PLAYFIELD_CHR_LIMIT = 256
 OUT_ASM = ROOT / "build" / "gfx_pool.asm"
@@ -28,8 +29,8 @@ CHR_ENEMY = 18
 CHR_BOLT = 6
 CHR_EXPLOSION = 9
 
-# Fallback UI glyph order when UI.png / UI.txt are absent ($, B, 0–9)
-UI_GLYPH_ORDER = "$B0123456789"
+# Fallback UI glyph order when UI.png / UI.txt are absent ($, B, R, 0–9)
+UI_GLYPH_ORDER = "$BR0123456789"
 
 TREE_MARK_SMALL = 0x20
 TREE_MARK_LARGE = 0x40
@@ -398,6 +399,9 @@ def digit_row(d: int, row: int) -> int:
     if d == ord("B"):
         pat = [0x18, 0x3C, 0x7E, 0xFF, 0x7E, 0x3C, 0x18, 0x00]
         return pat[row]
+    if d == ord("R"):
+        pat = [0x08, 0x3E, 0x2A, 0x7F, 0x2A, 0x3E, 0x08, 0x00]
+        return pat[row]
     return fonts.get(d, [0] * 8)[row]
 
 
@@ -406,11 +410,40 @@ def hardcoded_ui_glyph(ch: str) -> bytes:
         key: int | str = ord("$")
     elif ch == "B":
         key = ord("B")
+    elif ch == "R":
+        # Placeholder; normally overridden by udg_source.txt
+        key = ord("R")
     elif ch.isdigit():
         key = int(ch)
     else:
         raise ValueError(f"no hardcoded UI glyph for {ch!r}")
     return bytes([digit_row(key, row) for row in range(8)])
+
+
+def parse_udg_source(path: Path) -> dict[str, bytes]:
+    """Parse udg_source.txt sections into char-keyed 8-byte UDGs."""
+    section_to_ch = {
+        "lives": "B",
+        "range": "R",
+        "score": "$",
+    }
+    out: dict[str, bytes] = {}
+    name = ""
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith(";"):
+            name = line.lstrip(";").strip().lower()
+            continue
+        if "$" not in line or not name:
+            continue
+        for key, ch in section_to_ch.items():
+            if key in name:
+                out[ch] = bytes(parse_handlebar_byte_line(line))
+                break
+        name = ""
+    return out
 
 
 def _png_pixel_on(px: tuple[int, ...]) -> bool:
@@ -454,23 +487,47 @@ def load_ui_glyphs() -> tuple[list[tuple[str, bytes]], str]:
     """Return UI (char, udg) pairs in pool emission order."""
     if UI_PNG.is_file() and UI_TXT.is_file():
         txt = UI_TXT.read_text(encoding="utf-8").strip()
-        return load_ui_png(UI_PNG, UI_TXT), f"UI.png ({txt!r})"
-    if UI_PNG.is_file() ^ UI_TXT.is_file():
-        missing = UI_TXT if UI_PNG.is_file() else UI_PNG
-        print(f"Warning: UI source incomplete — missing {missing.name}, using hardcoded UI")
-    return [(ch, hardcoded_ui_glyph(ch)) for ch in UI_GLYPH_ORDER], "hardcoded"
+        glyphs = load_ui_png(UI_PNG, UI_TXT)
+        source = f"UI.png ({txt!r})"
+    else:
+        if UI_PNG.is_file() ^ UI_TXT.is_file():
+            missing = UI_TXT if UI_PNG.is_file() else UI_PNG
+            print(f"Warning: UI source incomplete — missing {missing.name}, using hardcoded UI")
+        glyphs = [(ch, hardcoded_ui_glyph(ch)) for ch in UI_GLYPH_ORDER]
+        source = "hardcoded"
+
+    if UDG_SOURCE.is_file():
+        overrides = parse_udg_source(UDG_SOURCE)
+        by_ch = dict(glyphs)
+        by_ch.update(overrides)
+        # Keep emission order; append any new override chars (e.g. R) after known ones.
+        order = [ch for ch, _ in glyphs]
+        for ch in overrides:
+            if ch not in order:
+                order.append(ch)
+        glyphs = [(ch, by_ch[ch]) for ch in order]
+        source = f"{source} + {UDG_SOURCE.name}"
+
+    return glyphs, source
 
 
 def required_ui_equates() -> dict[str, str]:
-    """Game code equate name → ASCII character in UI.txt."""
-    return {"$": "chr_ui_base", "B": "chr_bike", "0": "chr_digit_0"}
+    """ASCII character in UI order → game code equate name."""
+    return {
+        "$": "chr_ui_score",
+        "B": "chr_ui_lives",
+        "R": "chr_ui_range",
+        "0": "chr_digit_0",
+    }
 
 
 def ui_glyph_label(ch: str) -> str:
     if ch == "$":
         return "ui score ($)"
     if ch == "B":
-        return "ui bike (B)"
+        return "ui lives (bike)"
+    if ch == "R":
+        return "ui range"
     if ch.isdigit():
         return f"ui digit {ch}"
     return f"ui {ch!r}"
@@ -1019,9 +1076,14 @@ def main() -> int:
         f"gfx_pool_size = {len(pool.rows)}",
         f"gfx_playfield_size = {playfield_end}",
         f"chr_blank = {chr_blank}",
-        f"chr_ui_base = {ui['chr']['$']}",
-        f"chr_bike = {ui['chr']['B']}",
-        f"chr_digit_0 = {ui['chr']['0']}",
+    ]
+    for ch, name in required_ui_equates().items():
+        equates.append(f"{name} = {ui['chr'][ch]}")
+    # Back-compat aliases
+    equates.append(f"chr_ui_base = {ui['chr']['$']}")
+    equates.append(f"chr_bike = {ui['chr']['B']}")
+    equates.extend(
+        [
         f"TREE_MARK_SMALL = ${TREE_MARK_SMALL:02x}",
         f"TREE_MARK_LARGE = ${TREE_MARK_LARGE:02x}",
         f"chr_enemy_bike = {meta['sprites']['enemies']['start']}",
@@ -1031,7 +1093,8 @@ def main() -> int:
         f"chr_bonus = {meta['sprites']['bonus']['start']}",
         f"chr_bolt = {meta['sprites']['bolt']['start']}",
         f"chr_explosion = {meta['sprites']['explosion']['start']}",
-    ]
+        ]
+    )
     if meta.get("handlebars"):
         hb = meta["handlebars"]
         hp = meta["handlebar_playfield"]

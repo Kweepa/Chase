@@ -14,6 +14,10 @@ UpdateBolt
     bne +
     rts
 +
+    lda bolty
+    eor #7
+    adc #220
+    sta $900c
 
     inc bolty
     lda bolty
@@ -22,7 +26,18 @@ UpdateBolt
     lda #$ff
     sta bolty
 
+    lda #0
+    sta $900c
+
     jsr TryKillBonus
+
+!if 0 {
+    ; SUPER TEMP!!!
+    lda #1
+    sta bikedead
+    sta bikedead+1
+    jsr SpawnExplosion
+}
 
     rts
 
@@ -98,11 +113,16 @@ bolt_hit_bike
     sta bikedead,x
 
     jsr SpawnExplosion
+    jsr Add1000ToScore
+    lda #0
+    sta $900c
     rts
 
 bolt_hit_tree
     lda #$ff
     sta bolty
+    lda #0
+    sta $900c
     rts
 
 boltudg

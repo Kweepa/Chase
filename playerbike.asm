@@ -118,6 +118,11 @@ TryCrash
 
 +
     ; crashed
+    lda #0
+    sta $900a
+    lda #128
+    sta $900d
+
     ; draw a fat tree around x
     dex
     dex
@@ -142,7 +147,7 @@ TryCrash
     ; flash the border red/black
     lda #8|RED
     sta crash_border
-    ldx #25
+    ldx #75
 -
     lda crash_border
     eor #(RED^BLACK)
@@ -153,10 +158,24 @@ TryCrash
     bne -
 
     dec lives
+    jsr DrawMen
 
-    jsr InitGame
+    lda #0
+    sta $900d
+
+    jsr InitAfterCrash
     rts
 
+UpdatePlayer
+    jsr UpdateUI
+    lda bikez
+    bne +
+    lda frame_tick
+    and #1
+    bne +
+    jsr Add1ToScore
++
+    rts
 
 fat_tree_x
     !byte 0

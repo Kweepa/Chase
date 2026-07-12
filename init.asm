@@ -5,8 +5,11 @@ InitGame
     lda #3
     sta lives
 
-    lda #2
+    lda #1
     sta sector
+
+    lda #0
+    sta night
 
     lda #0
     sta frame_tick
@@ -18,6 +21,8 @@ InitGame
     lda #BG_TOP
     sta skycol
 
+    jsr ResetScore
+
     rts
 
 InitSector
@@ -25,24 +30,17 @@ InitSector
     jsr InitBolt
     jsr InitExplosion
     jsr InitBonus
+    jsr InitPlayerBike
+    jsr DrawUIFrame
+    jsr DrawBikeHandlebars
+    jsr DrawHiScore
 
     rts
 
-DrawUIStub
-    lda #chr_digit_0 + 3
-    ; sta hud_lives_scr
-    lda #(YELLOW << 4) | WHITE
-    sta hud_lives_col
-    rts
+InitAfterCrash
+    jsr InitTrees
+    jsr InitBolt
+    jsr InitExplosion
+    jsr InitPlayerBike
 
-DrawUIFrame
-
-    ldx #4 * screen_cols - 1
--
-    lda ui_frame_chr,x
-    sta screen_base + 18 * screen_cols,x
-    lda ui_frame_col,x
-    sta color_base + 18 * screen_cols,x
-    dex
-    bpl -
     rts

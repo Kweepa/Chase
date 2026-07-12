@@ -1,0 +1,8 @@
+; lives indicator
+$f0, $1e, $e7, $da, $a4, $44, $48, $30
+
+; in range indicator
+$08, $3e, $2a, $7f, $2a, $3e, $08, $00
+
+; score indicator
+$04, $3e, $49, $3c, $92, $7c, $40, $00

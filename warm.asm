@@ -11,7 +11,6 @@ WarmStart
     ldx #$ff
     txs
 
-    jsr $fdf9                   ; IOINIT — VIC screen defaults ($1000, 22×23)
     sei
 
     ldy #10
@@ -22,7 +21,23 @@ WarmStart
     dey
     bpl -
 
-    jsr InitRasterSplit         ; stable raster IRQ: light blue top, green from row 10
+    jsr InitRasterSplit         ; stable raster IRQ
+
+    ; copy down the digit chr definitions
+    ldx #79
+-
+    lda $8000 + 8 * 48, x
+    sta udg_base + 8 * chr_digit_0, x
+    dex
+    bpl -
+
+    ; reset hiscore
+    ldx #5
+    lda #0
+-
+    sta hiscore,x
+    dex
+    bpl -
 
     jmp BootGame
 

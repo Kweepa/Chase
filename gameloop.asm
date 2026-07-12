@@ -7,9 +7,6 @@ BootGame
 
     jsr InitGame
 
-    jsr DrawUIFrame
-    jsr DrawBikeHandlebars
-
     ; fall through to main_loop for now
 
 main_loop
@@ -25,8 +22,11 @@ main_loop
     jsr DrawTrees
     jsr DrawExplosion
     jsr UpdateExplosion
-    jsr DrawUIStub
     jsr UpdateEngineSound
+    jsr UpdatePlayer
     inc frame_tick
     jsr TryCrash
-    jmp main_loop
+    jsr TrySectorChange
+    lda lives
+    bne main_loop
+    beq BootGame

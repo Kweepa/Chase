@@ -47,6 +47,12 @@ TryKillBonus
     sta bonusdead
     lda #10
     sta bonusexp
+    jsr Add1000ToScore
+    jsr Add1000ToScore
+
+    lda #160
+    sta $900d
+
     rts
 
 UpdateHelicopter
@@ -65,14 +71,13 @@ UpdateHelicopter
     sta udg_base + 8 * chr_heli + 9
 
     lda bonustime
-    cmp #6
+    cmp #9          ; ensure it reaches the ground level
     bcs ++
     ldy bonusy
     cpy #9
     beq +
-    iny
+    inc bonusy
 +   
-    sty bonusy
     rts
 ++
     cmp #14
@@ -130,10 +135,15 @@ UpdateBonus
 +
 
     lda bonusexp
-    bmi +
+    bmi ++
     dec bonusexp
-    rts
+    lda bonusexp
+    bmi +
+    lda #0
+    sta $900d
 +
+    rts
+++
     lda #0
     sta bonusvis
     rts
