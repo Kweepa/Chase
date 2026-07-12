@@ -37,6 +37,9 @@ UpdateUI
     ldx #BLACK
     lda bikez
     bne +
+    lda frame_tick
+    and #1
+    bne +
     ldx #WHITE
 +
     stx color_base + 20 * screen_cols + 9

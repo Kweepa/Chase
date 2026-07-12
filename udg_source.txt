@@ -1,5 +1,5 @@
 ; lives indicator
-$f0, $1e, $e7, $da, $a4, $44, $48, $30
+$08, $04, $4e, $ff, $19, $66, $66, $00
 
 ; in range indicator
 $08, $3e, $2a, $7f, $2a, $3e, $08, $00

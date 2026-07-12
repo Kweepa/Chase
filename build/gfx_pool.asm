@@ -220,7 +220,7 @@ gfx_pool
     !byte $7f, $f6, $3f, $3f, $7e, $7c, $af, $5e    ; chr 211 — explosion 7
     !byte $fe, $7e, $fc, $f8, $f0, $e0, $c0, $80    ; chr 212 — explosion 8
     !byte $04, $3e, $49, $3c, $92, $7c, $40, $00    ; chr 213 — ui score ($)
-    !byte $f0, $1e, $e7, $da, $a4, $44, $48, $30    ; chr 214 — ui lives (bike)
+    !byte $08, $04, $4e, $ff, $19, $66, $66, $00    ; chr 214 — ui lives (bike)
     !byte $08, $3e, $2a, $7f, $2a, $3e, $08, $00    ; chr 215 — ui range
     !byte $3c, $66, $6e, $76, $66, $66, $3c, $00    ; chr 216 — ui digit 0
     !byte $18, $38, $18, $18, $18, $18, $3c, $00    ; chr 217 — ui digit 1
