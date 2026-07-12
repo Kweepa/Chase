@@ -69,6 +69,7 @@ ReadInput
     sta speed
     ldx #$ef
     jsr ScanKeyRow
+    ora stickup
     beq +
     lda #2
     sta speed
@@ -76,6 +77,7 @@ ReadInput
 
     ldx #$fb
     jsr ScanKeyRow
+    ora stickfire
     sta boltfired
 
     ldx #$bf

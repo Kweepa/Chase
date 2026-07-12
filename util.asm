@@ -37,12 +37,18 @@ WaitForRasterLine
     rts
 
 WaitForKeypress
-    ldx #$ef
+    ; wait for space or joystick fire to be released, then pressed
 -
+    jsr ScanJoystick
+    ldx #$ef
     jsr ScanKeyRow
+    ora stickfire
     bne -
 -
+    jsr ScanJoystick
+    ldx #$ef
     jsr ScanKeyRow
+    ora stickfire
     beq -
     rts
 

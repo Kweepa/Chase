@@ -66,4 +66,4 @@ ending_text
     !scr "   You are sent to",0
     !scr "  the next region...",0
     !scr 0
-    !scr "        Press SPACE...",0
+    !scr " Press SPACE or FIRE...",0

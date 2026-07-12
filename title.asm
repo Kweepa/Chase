@@ -22,7 +22,7 @@ help_text_1
     !scr " shooting enemy Riders",0
     !scr "   for $1000 a time.",0
     !scr 0
-    !scr "        Press SPACE...",0
+    !scr " Press SPACE or FIRE...",0
 
 help_text_2
 
@@ -35,7 +35,7 @@ help_text_2
     !scr 0
     !scr 0
     !scr 0
-    !scr "        Press SPACE...",0
+    !scr " Press SPACE or FIRE...",0
 
 help_text_3
 
@@ -48,7 +48,7 @@ help_text_3
     !scr "and your purse increase",0
     !scr " while in hot pursuit.",0
     !scr 0
-    !scr "        Press SPACE...",0
+    !scr " Press SPACE or FIRE...",0
 
 help_text_4
     !scr "  It is said that the",0
@@ -60,7 +60,7 @@ help_text_4
     !scr "      find out...",0
     !scr 0
     !scr 0
-    !scr "        Press SPACE...",0
+    !scr " Press SPACE or FIRE...",0
 
 help_text_5
     !scr "Controls",0
@@ -72,7 +72,7 @@ help_text_5
     !scr "Z,C,B,M,Spc..accelerate",0
     !scr 0
     !scr 0
-    !scr "        Press SPACE...",0
+    !scr " Press SPACE or FIRE...",0
 
 DoTitleScreen
 
