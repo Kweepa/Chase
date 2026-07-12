@@ -8,4 +8,4 @@ python tools\sort_lbl.py chase.lbl
 if errorlevel 1 exit /b 1
 
 echo Build OK: chase.prg
-\app\vice3.10\bin\xvic -pal -memory 16k +basicload -autostart chase.prg
+\app\vice3.10\bin\xvic -pal -memory 8k +basicload -autostart chase.prg
