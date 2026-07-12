@@ -237,7 +237,3 @@ tree_strip_22_fg
 tree_strip_23_chr
 tree_strip_23_fg
 
-; Spectrum $64AB tree density by sector (1..8)
-tree_density
-    !byte 7, 15, 25, 35, 45, 55, 65, 75
-

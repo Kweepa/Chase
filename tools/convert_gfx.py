@@ -769,10 +769,6 @@ def emit_tree_strips_asm(
             lines.append("    !byte " + ", ".join(str(c) for c in chunk))
         lines.append("")
 
-    lines.append("; Spectrum $64AB tree density by sector (1..8)")
-    lines.append("tree_density")
-    lines.append("    !byte 7, 15, 25, 35, 45, 55, 65, 75")
-    lines.append("")
     return lines
 
 

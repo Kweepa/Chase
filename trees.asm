@@ -53,8 +53,11 @@ PlantTrees
     bpl -
 
 ++
-
     rts
+
+tree_density
+    !byte 5, 10, 15, 20, 25, 30, 35, 40
+
 
 MoveTrees
 
