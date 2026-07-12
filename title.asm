@@ -13,54 +13,54 @@ title_text
     !scr 0
 
 help_text_1
-    !scr "2501. 100 years after",0
-    !scr "the Great War. Mighty",0
-    !scr "warlords fight over", 0
-    !scr "forest territory.",0
-    !scr "As an elite mercenary,",0
-    !scr "you patrol the forest",0
-    !scr "shooting enemy Riders",0
-    !scr "for $1000 a time.",0
+    !scr " 2501. 100 years after",0
+    !scr " the Great War. Mighty",0
+    !scr "  warlords fight over", 0
+    !scr "   forest territory.",0
+    !scr " As an elite mercenary,",0
+    !scr " you patrol the forest",0
+    !scr " shooting enemy Riders",0
+    !scr "   for $1000 a time.",0
     !scr 0
-    !scr "Press SPACE...",0
+    !scr "        Press SPACE...",0
 
 help_text_2
 
-    !scr "You may find tanks",0
-    !scr "and helicopters too -",0
-    !scr "your masters reward",0
-    !scr "you particularly well",0
-    !scr "if you destroy these.",0
+    !scr "  You may find tanks",0
+    !scr " and helicopters too -",0
+    !scr "  your masters reward",0
+    !scr " you particularly well",0
+    !scr " if you destroy these.",0
     !scr 0
     !scr 0
     !scr 0
     !scr 0
-    !scr "Press SPACE...",0
+    !scr "        Press SPACE...",0
 
 help_text_3
 
-    !scr "You can only fire at",0
-    !scr "the other Riders when",0
-    !scr "at top speed and can",0
-    !scr "only hit them when",0
-    !scr "close. Your range",0
-    !scr "indicator will flash",0
+    !scr " You can only fire at",0
+    !scr " the other Riders when",0
+    !scr " at top speed and can",0
+    !scr "  only hit them when",0
+    !scr "   close. Your range",0
+    !scr " indicator will flash",0
     !scr "and your purse increase",0
-    !scr "while in hot pursuit.",0
+    !scr " while in hot pursuit.",0
     !scr 0
-    !scr "Press SPACE...",0
+    !scr "        Press SPACE...",0
 
 help_text_4
-    !scr "It is said that the",0
-    !scr "greatest reward is",0
+    !scr "  It is said that the",0
+    !scr "  greatest reward is",0
     !scr "kept for the Rider who",0
-    !scr "can penetrate eight",0
+    !scr "  can penetrate eight",0
     !scr "sectors - you will need",0
     !scr "every ounce of skill to",0
-    !scr "find out...",0
+    !scr "      find out...",0
     !scr 0
     !scr 0
-    !scr "Press SPACE...",0
+    !scr "        Press SPACE...",0
 
 help_text_5
     !scr "Controls",0
@@ -72,7 +72,7 @@ help_text_5
     !scr "Z,C,B,M,Spc..accelerate",0
     !scr 0
     !scr 0
-    !scr "Press SPACE...",0
+    !scr "        Press SPACE...",0
 
 DoTitleScreen
 
