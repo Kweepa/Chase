@@ -26,23 +26,5 @@ color_base  = $9400
 RASTERLINE_PAL  = $10
 RASTERLINE_NTSC = $62
 
-; Raster split
-LIGHT_BLUE          = 14
-BG_TOP              = (LIGHT_BLUE << 4) | 8
-BG_BOTTOM           = (GREEN << 4) | 8
-
-; Raster split timing — PAL 6561-101 (71 CPU cycles/scanline, 312 lines/frame).
-; See raster.asm (Marko Makela / Codebase64 stable-raster routine).
-;
-; RASTER_SYNC_DOUBLE — $9004 value waited on at InitRasterSplit; each step is
-;   one double raster line (2 scanlines). Positions the per-frame top IRQ.
-; FRAME_TIMER_PAL — VIA2 Timer A reload: one IRQ per frame (312×71 − 2).
-; ROW10_DELAY_PAL — VIA2 Timer B one-shot: CPU cycles from top IRQ (light blue)
-;   to green split at playfield row 10 horizon. Tune on hardware.
-RASTER_SYNC_DOUBLE  = 27
-SCANLINE_CYCLES     = 71
-FRAME_TIMER_PAL     = 312 * SCANLINE_CYCLES - 2
-ROW10_DELAY_PAL     = 83 * SCANLINE_CYCLES + 30
-
 ; Gfx equates (sync with build/gfx_equates.asm from convert_gfx.py)
 !source "build/gfx_equates.asm"

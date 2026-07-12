@@ -16,6 +16,25 @@
 
 !zone raster
 
+; Raster split
+LIGHT_BLUE          = 14
+BG_TOP              = (LIGHT_BLUE << 4) | 8
+BG_BOTTOM           = (GREEN << 4) | 8
+
+; Raster split timing — PAL 6561-101 (71 CPU cycles/scanline, 312 lines/frame).
+; See raster.asm (Marko Makela / Codebase64 stable-raster routine).
+;
+; RASTER_SYNC_DOUBLE — $9004 value waited on at InitRasterSplit; each step is
+;   one double raster line (2 scanlines). Positions the per-frame top IRQ.
+; FRAME_TIMER_PAL — VIA2 Timer A reload: one IRQ per frame (312×71 − 2).
+; ROW10_DELAY_PAL — VIA2 Timer B one-shot: CPU cycles from top IRQ (light blue)
+;   to green split at playfield row 10 horizon. Tune on hardware.
+RASTER_SYNC_DOUBLE  = 27
+SCANLINE_CYCLES     = 71
+FRAME_TIMER_PAL     = 312 * SCANLINE_CYCLES - 2
+ROW10_DELAY_PAL     = 83 * SCANLINE_CYCLES + 40
+
+
 InitRasterSplit
     lda #$7f
     sta $912e                   ; disable and acknowledge VIA2 interrupts
@@ -109,6 +128,8 @@ TopIrq
     stx $9129                   ; write T2C-H — starts Timer B one-shot
     lda #$a0
     sta $912e                   ; enable Timer B underflow interrupt on VIA2 IER
+
+    jsr UpdateBoltSound
 
     jmp DummyIRQ
 

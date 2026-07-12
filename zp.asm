@@ -22,10 +22,11 @@ boltx         = $c0
 bolty         = $c1
 boltoff       = $c2 ; an offset from the horizon so we can quickly render without using a lookup table
 boltfired     = $c3
+boltsound     = $c4
 
-explosiont    = $c4
-explosionx    = $c5
-explosioncol  = $c6
+explosiont    = $c5
+explosionx    = $c6
+explosioncol  = $c7
 
 bonusdelay    = $c8
 bonusx        = $c9

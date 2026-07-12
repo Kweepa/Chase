@@ -21,6 +21,8 @@ WarmStart
     dey
     bpl -
 
+    jsr InitBolt
+
     jsr InitRasterSplit         ; stable raster IRQ
 
     ; copy down the digit chr definitions

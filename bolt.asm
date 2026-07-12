@@ -3,6 +3,20 @@
 InitBolt
     lda #$ff
     sta bolty
+    lda #200
+    sta boltsound
+    rts
+
+UpdateBoltSound
+    lda boltsound
+    cmp #200
+    beq +
+    sta $900c
+    dec boltsound
+    rts
++
+    lda #0
+    sta $900c
     rts
 
 UpdateBolt
@@ -14,20 +28,11 @@ UpdateBolt
     bne +
     rts
 +
-    lda bolty
-    eor #7
-    adc #220
-    sta $900c
-
     inc bolty
     lda bolty
     cmp #6
     bne +
-    lda #$ff
-    sta bolty
-
-    lda #0
-    sta $900c
+    jsr InitBolt
 
     jsr TryKillBonus
 
@@ -71,6 +76,9 @@ try_fire_bolt
     inc bolty ; was ff, now 0
     lda #5 * screen_cols + 11
     sta boltoff
+
+    lda #255
+    sta boltsound
     rts
 
 DrawBolt
@@ -124,17 +132,8 @@ mark_bike_dead
     jsr SpawnExplosion
     jsr Add1000ToScore
 +
-    lda #$ff
-    sta bolty
-    lda #0
-    sta $900c
-    rts
-
 bolt_hit_tree
-    lda #$ff
-    sta bolty
-    lda #0
-    sta $900c
+    jsr InitBolt
     rts
 
 boltudg
